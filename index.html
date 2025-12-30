@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖ドキ!DUO 極・攻略Navi V5</title>
+    <title>沖ドキ!DUO 極・攻略Navi 最終調整版</title>
     <style>
         body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
         .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; }
@@ -26,7 +26,6 @@
         .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        /* アコーディオン */
         details { background: #2a2a2a; border-radius: 6px; margin-bottom: 10px; border: 1px solid #444; }
         summary { padding: 15px; font-size: 0.95rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
         summary::after { content: '＋'; }
@@ -39,12 +38,12 @@
         .highlight { color: #ff4444; font-weight: bold; }
         .blue-text { color: #00ffff; font-weight: bold; }
 
-        .img-box { text-align: center; margin: 10px 0; background: #000; padding: 5px; border-radius: 5px; }
-        .img-box img { max-width: 100%; border-radius: 3px; border: 1px solid #555; }
-        .img-label { font-size: 0.7rem; color: #aaa; margin-top: 3px; }
+        .img-box { text-align: center; margin: 10px 0; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #555; }
+        .img-box img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
+        .img-label { font-size: 0.75rem; color: #ffcc00; margin-top: 8px; font-weight: bold; }
 
         .screen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .screen-item { border-radius: 6px; padding: 10px; text-align: center; font-size: 0.75rem; border: 1px solid #555; }
+        .screen-item { border-radius: 6px; padding: 10px; text-align: center; font-size: 0.75rem; border: 1px solid #555; line-height: 1.4; }
         .sc-day { background: linear-gradient(to bottom, #87CEEB, #F0E68C); color: #000; }
         .sc-eve { background: linear-gradient(to bottom, #FF8C00, #B22222); }
         .sc-night { background: linear-gradient(to bottom, #191970, #4B0082); }
@@ -61,7 +60,7 @@
 
     <div class="tabs">
         <div id="btn-tool" class="tab active" onclick="showTab('tool')">判定ツール</div>
-        <div id="btn-analysis" class="tab" onclick="showTab('analysis')">解析DB</div>
+        <div id="btn-analysis" class="tab" onclick="switchTab('analysis')">解析DB</div>
     </div>
 
     <div id="content-tool" class="content active">
@@ -107,42 +106,46 @@
     <div id="content-analysis" class="content">
         
         <details>
-            <summary>🌸 ドキハナモード A〜G & 示唆演出</summary>
+            <summary>🌸 ドキハナモード A〜G & ベルフラッシュ示唆</summary>
             <div class="details-inner">
-                <table class="info-table" style="font-size: 0.7rem;">
-                    <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生率</th><th>恩恵</th></tr>
-                    <tr><td>A〜B</td><td>なし〜激低</td><td>天国</td></tr>
-                    <tr><td>C〜D</td><td>低〜中</td><td>天国</td></tr>
-                    <tr><td>E</td><td>高</td><td>天国</td></tr>
-                    <tr><td>F</td><td><span class="highlight">100%</span></td><td>天国以上</td></tr>
-                    <tr><td>G</td><td><span class="highlight">100%</span></td><td><span class="highlight">ドキドキ以上</span></td></tr>
+                <table class="info-table" style="font-size: 0.75rem;">
+                    <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生率</th><th>成功時恩恵</th></tr>
+                    <tr><td>モードA〜B</td><td>なし〜激低</td><td>天国以上</td></tr>
+                    <tr><td>モードC</td><td>低</td><td>天国以上</td></tr>
+                    <tr><td>モードD</td><td>中</td><td>天国以上</td></tr>
+                    <tr><td>モードE</td><td>高</td><td>天国以上</td></tr>
+                    <tr><td>モードF</td><td><span class="highlight">100%</span></td><td>天国以上</td></tr>
+                    <tr><td>モードG</td><td><span class="highlight">100%</span></td><td><span class="highlight">ドキドキ以上</span></td></tr>
                 </table>
 
-                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px;">【視覚示唆1】ベル特殊フラッシュ</h4>
+                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px; border-left:3px solid #ff4444; padding-left:8px;">ベル特殊フラッシュ示唆</h4>
+                
                 <div class="img-box">
-                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" alt="ベルフラッシュ">
-                    <div class="img-label">引用：ちょんぼりすた様</div>
+                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" alt="ベルフラッシュ画像">
+                    <div class="img-label">重要：リール周辺の光り方をチェック！</div>
                 </div>
+                
                 <table class="info-table">
-                    <tr><th>パターン1</th><td>通常フラッシュ。期待度低。</td></tr>
-                    <tr><th>パターン2</th><td><span class="blue-text">モードC以上</span>の大チャンス！</td></tr>
+                    <tr>
+                        <th style="width:30%;">パターン①</th>
+                        <td>リール周辺が白くフラッシュ。<br><span class="blue-text">モードB以上</span>の期待度アップ。</td>
+                    </tr>
+                    <tr>
+                        <th style="width:30%;">パターン②</th>
+                        <td>リール全体が激しくフラッシュ。<br><span class="highlight">モードC以上濃厚！</span><br><span class="small-text">※D・E・G滞在にも期待できる激アツ演出。</span></td>
+                    </tr>
                 </table>
 
-                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px;">【視覚示唆2】ドキハナロゴの鼓動</h4>
-                <div class="img-box">
-                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-dokihana.jpg" alt="ドキハナロゴ">
-                    <div class="img-label">引用：ちょんぼりすた様</div>
+                <div style="margin-top:12px; font-size: 0.8rem; background:#444; padding:8px; border-radius:5px;">
+                    <span class="highlight">【その他の確定示唆】</span><br>
+                    ● 33G目に告知が発生した時点で<span class="blue-text">モードC以上確定</span>。<br>
+                    ● ドキハナチャンス失敗時も<span class="highlight">50%でモードを維持</span>するため、次の当選まで続行推奨。
                 </div>
-                <ul style="font-size: 0.8rem; padding-left: 20px;">
-                    <li><span class="highlight">弱：</span>基本。</li>
-                    <li><span class="highlight">中：</span>期待度アップ！</li>
-                    <li><span class="highlight">強：</span><span class="blue-text">モードC以上</span>の期待大！</li>
-                </ul>
             </div>
         </details>
 
         <details>
-            <summary>🌻 特殊点滅 全18種（恩恵別）</summary>
+            <summary>🌻 ハイビスカス特殊点滅 全18種</summary>
             <div class="details-inner">
                 <table class="info-table">
                     <tr style="background:#111;"><th colspan="2" class="blue-text" style="text-align:center;">通常B以上濃厚</th></tr>
@@ -161,13 +164,13 @@
         </details>
 
         <details>
-            <summary>🌅 終了画面の示唆（4種）</summary>
+            <summary>🌅 ボーナス終了画面の示唆(4種)</summary>
             <div class="details-inner">
                 <div class="screen-grid">
-                    <div class="screen-item sc-day"><b>【昼】</b><br>基本</div>
-                    <div class="screen-item sc-eve"><b>【夕方】</b><br>通常B期待</div>
-                    <div class="screen-item sc-night"><b>【夜】</b><br>通常B濃厚</div>
-                    <div class="screen-item sc-flower"><b>【花吹雪】</b><br>天国濃厚</div>
+                    <div class="screen-item sc-day"><b>【昼】</b><br>デフォルト<br>基本画面</div>
+                    <div class="screen-item sc-eve"><b>【夕方】</b><br>通常B以上<br>期待度アップ</div>
+                    <div class="screen-item sc-night"><b>【夜】</b><br>通常B以上<br>濃厚！</div>
+                    <div class="screen-item sc-flower"><b>【花吹雪】</b><br>天国以上<br>濃厚！</div>
                 </div>
             </div>
         </details>
