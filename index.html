@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖ドキ!DUO 完全攻略ツール V2</title>
+    <title>沖ドキ!DUO 完全攻略ツール V2.1</title>
     <style>
         body { font-family: sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; }
-        .tabs { display: flex; margin-bottom: 15px; border-bottom: 2px solid #555; }
-        .tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; background: #333; color: #aaa; font-weight: bold; transition: 0.3s; }
-        .tab.active { background: #ff4444; color: #fff; border-radius: 5px 5px 0 0; }
+        .tabs { display: flex; margin-bottom: 15px; border-bottom: 2px solid #555; background: #222; border-radius: 8px 8px 0 0; overflow: hidden; }
+        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #aaa; font-weight: bold; transition: 0.3s; }
+        .tab.active { background: #ff4444; color: #fff; }
         .content { display: none; }
-        .content.active { display: block; }
+        .content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; }
-        h1 { font-size: 1.2rem; color: #ffcc00; text-align: center; margin-bottom: 20px; text-shadow: 1px 1px 2px #000; }
+        h1 { font-size: 1.2rem; color: #ffcc00; text-align: center; margin-bottom: 15px; text-shadow: 1px 1px 2px #000; }
         h3 { margin-top: 0; color: #ffcc00; font-size: 1rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
         
-        /* ツール用スタイル */
         label { display: block; margin-top: 10px; font-size: 0.85rem; color: #ccc; }
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 5px; border: none; font-size: 1rem; box-sizing: border-box; }
         input[type="number"], input[type="text"] { background: #eee; color: #000; }
@@ -28,7 +28,6 @@
         .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        /* 解析用スタイル */
         .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; margin-top: 5px; }
         .info-table th, .info-table td { border: 1px solid #555; padding: 8px; text-align: left; vertical-align: middle; }
         .info-table th { background: #444; color: #ffcc00; width: 35%; }
@@ -37,7 +36,6 @@
         ul { padding-left: 18px; font-size: 0.85rem; color: #ddd; margin: 5px 0; }
         li { margin-bottom: 6px; }
 
-        /* 履歴テーブル */
         .table-container { overflow-x: auto; }
         table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.75rem; min-width: 400px; }
         th, td { border: 1px solid #555; padding: 8px; text-align: center; }
@@ -49,8 +47,8 @@
     <h1>🌺 沖ドキ!DUO 完全攻略ツール</h1>
 
     <div class="tabs">
-        <div class="tab active" onclick="switchTab('tool')">判定ツール</div>
-        <div class="tab" onclick="switchTab('analysis')">解析情報</div>
+        <div id="tab-tool" class="tab active" onclick="switchTab('tool')">判定ツール</div>
+        <div id="tab-analysis" class="tab" onclick="switchTab('analysis')">解析情報</div>
     </div>
 
     <div id="tool" class="content active">
@@ -118,12 +116,12 @@
             <h3>🌸 ドキハナモード解析</h3>
             <ul style="font-size: 0.8rem;">
                 <li><span class="highlight">モードA/B：</span>DHC発生せず。</li>
-                <li><span class="highlight">モードC：</span>33GでDHC発生率 低・成功期待度 <span class="blue-text">50%</span>。</li>
-                <li><span class="highlight">モードD：</span>33GでDHC発生率 中・成功期待度 <span class="blue-text">100%</span>。</li>
-                <li><span class="highlight">モードE：</span>33GでDHC発生率 高・成功時 <span class="blue-text">ドキドキ移行</span>！</li>
+                <li><span class="highlight">モードC：</span>発生率 低・成功期待度 <span class="blue-text">50%</span>。</li>
+                <li><span class="highlight">モードD：</span>発生率 中・成功期待度 <span class="blue-text">100%</span>。</li>
+                <li><span class="highlight">モードE：</span>発生率 高・成功時 <span class="blue-text">ドキドキ移行</span>！</li>
             </ul>
             <p style="font-size: 0.75rem; color:#ccc; margin-top:5px; padding:5px; border-top:1px dashed #555;">
-                ※<span class="highlight">DHC失敗時</span>は上位モードを維持しやすい（50%ループ）ため、次の当選まで打ち切り推奨！
+                ※失敗時は上位モードを維持しやすい（50%ループ）。
             </p>
         </div>
 
@@ -136,16 +134,20 @@
                 <tr><th>終了画面 夜</th><td><span class="blue-text">通常B以上</span>濃厚！</td></tr>
             </table>
         </div>
-
         <p style="font-size: 0.7rem; text-align: center; color: #777;">引用元：ちょんぼりすた様</p>
     </div>
 
     <script>
+        // タブ切り替え機能（修正済み）
         function switchTab(tabId) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            // 全てのコンテンツを非表示にする
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-            document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+            // 全てのタブのactiveを解除
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            // 指定されたコンテンツとタブを有効にする
             document.getElementById(tabId).classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
         }
 
         function checkExpectation() {
@@ -189,4 +191,30 @@
                 else if (thru === 4) border = 0;
             }
 
-            if
+            if (games >= border) {
+                resDiv.className = "safe";
+                resDiv.innerHTML = `【狙い目】${border}Gクリア！<br>打っちゃえニッサン‼️`;
+            } else {
+                resDiv.className = "danger";
+                resDiv.innerHTML = `【待機】あと ${border - games}G`;
+            }
+        }
+
+        function saveRecord() {
+            const state = document.getElementById('state').selectedOptions[0].text;
+            const thru = document.getElementById('thru').value;
+            const startG = document.getElementById('games').value || "-";
+            const winG = document.getElementById('win_games').value || "-";
+            const memoText = document.getElementById('memo').value || "-";
+            
+            const tbody = document.getElementById('historyBody');
+            const row = tbody.insertRow(0);
+            row.innerHTML = `<td>${state}</td><td>${thru}</td><td>${startG}</td><td>${winG}</td><td>${memoText}</td>`;
+            
+            document.getElementById('win_games').value = "";
+            document.getElementById('memo').value = "";
+            alert("データを保存しました！");
+        }
+    </script>
+</body>
+</html>
