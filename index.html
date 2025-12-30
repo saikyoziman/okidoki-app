@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>沖ドキ!DUO 極・攻略Navi V8</title>
+    <title>沖ドキ!DUO 極・攻略Navi V9</title>
     <style>
         body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
         
@@ -24,11 +24,12 @@
         select, input[type="number"], input[type="text"] { width: 100%; padding: 15px; margin-top: 5px; border-radius: 8px; border: none; font-size: 1rem; box-sizing: border-box; background: #eee; color: #000; -webkit-appearance: none; }
         
         /* チェックボックス行 */
-        .check-row { display: flex; align-items: center; margin-top: 15px; font-size: 0.9rem; line-height: 1; }
-        .check-row input[type="checkbox"] { width: 22px; height: 22px; margin-right: 10px; cursor: pointer; }
+        .check-row { display: flex; align-items: center; margin-top: 15px; font-size: 0.9rem; line-height: 1.2; }
+        .check-row input[type="checkbox"] { width: 24px; height: 24px; margin-right: 12px; cursor: pointer; flex-shrink: 0; }
 
         /* 判定ボタン（大型化） */
-        .btn-judge { background: #ff4444; color: white; padding: 20px; border: none; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 0 #b33030; active { transform: translateY(2px); box-shadow: none; } }
+        .btn-judge { background: #ff4444; color: white; padding: 22px; border: none; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 0 #b33030; }
+        .btn-judge:active { transform: translateY(2px); box-shadow: none; }
         
         .btn-save { background: #2196f3; color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; font-weight: bold; margin-top: 10px; }
 
@@ -45,25 +46,17 @@
         details[open] summary::after { content: 'ー'; }
         .details-inner { padding: 10px; border-top: 1px solid #444; background: #333; }
 
-        .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; margin-top: 5px; }
+        .info-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; margin-top: 5px; }
         .info-table th, .info-table td { border: 1px solid #555; padding: 10px; text-align: left; }
-        .info-table th { background: #222; color: #ffcc00; }
+        .info-table th { background: #222; color: #ffcc00; width: 40%; }
         .highlight { color: #ff4444; font-weight: bold; }
         .blue-text { color: #00ffff; font-weight: bold; }
 
-        .img-box { text-align: center; margin: 10px 0; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #555; }
-        .img-box img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
-
-        .screen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .screen-item { border-radius: 6px; padding: 12px; text-align: center; font-size: 0.75rem; border: 1px solid #555; line-height: 1.5; }
-        .sc-day { background: linear-gradient(to bottom, #87CEEB, #F0E68C); color: #000; }
-        .sc-eve { background: linear-gradient(to bottom, #FF8C00, #B22222); }
-        .sc-night { background: linear-gradient(to bottom, #191970, #4B0082); }
-        .sc-flower { background: linear-gradient(to bottom, #FFB6C1, #FF69B4); color: #000; }
+        /* フラッシュ図解スタイル */
+        .flash-icon { background: #111; padding: 5px; border-radius: 4px; color: #ffeb3b; font-size: 0.9rem; letter-spacing: 2px; text-align: center; margin-bottom: 5px; }
 
         .history-wrap { overflow-x: auto; margin-top: 10px; }
         table.history-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 350px; }
-        .history-table th, .history-table td { border: 1px solid #555; padding: 8px; text-align: center; }
     </style>
 </head>
 <body>
@@ -120,8 +113,8 @@
             <button class="btn-save" onclick="saveData()">履歴に保存</button>
             <div class="history-wrap">
                 <table class="history-table">
-                    <thead><tr><th>状況</th><th>ス</th><th>開始</th><th>当選</th><th>メモ</th></tr></thead>
-                    <tbody id="historyBody"></tbody>
+                    <thead><tr style="background:#444;"><th>状況</th><th>ス</th><th>開始</th><th>当選</th><th>メモ</th></tr></thead>
+                    <tbody id="historyBody" style="text-align:center;"></tbody>
                 </table>
             </div>
         </div>
@@ -129,22 +122,60 @@
 
     <div id="content-analysis" class="content">
         <details open>
-            <summary>🌸 ドキハナモード & ベルフラッシュ</summary>
+            <summary>🌸 ドキハナモード示唆演出 (特殊フラッシュ)</summary>
             <div class="details-inner">
-                <table class="info-table" style="font-size: 0.75rem;">
+                <table class="info-table">
+                    <tr style="background:#111; color:#ffcc00;"><th>特殊フラッシュ</th><th>ドキハナモード示唆</th></tr>
+                    <tr>
+                        <td>
+                            <div class="flash-icon">← ← ←</div>
+                            リプレイ特殊①
+                        </td>
+                        <td>モードB期待度UP</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flash-icon">↓ ↓ ↓</div>
+                            リプレイ特殊②
+                        </td>
+                        <td>モードD期待度UP＋<br>モードB期待度UP(強)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flash-icon">↑ ↑ ↑</div>
+                            ベル特殊①
+                        </td>
+                        <td><span class="blue-text">モードB以上濃厚</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flash-icon">→ → →<br>↓ ↓ ↓</div>
+                            ベル特殊②
+                        </td>
+                        <td><span class="highlight">モードD以上濃厚</span></td>
+                    </tr>
+                </table>
+                
+                <div style="margin-top:10px; font-size:0.7rem; color:#aaa; line-height:1.4;">
+                    ※画像が表示されない場合、上掲の矢印（フラッシュの流れる方向）を参考にしてください。<br>
+                    リプレイ：黄矢印 / ベル：黄矢印(逆向き含む)
+                </div>
+                
+                <div style="margin-top:10px; text-align:center;">
+                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" style="max-width:100%; border-radius:5px; border:1px solid #555;" alt="特殊フラッシュ画像">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>🌸 ドキハナモード A〜G 解析</summary>
+            <div class="details-inner">
+                <table class="info-table">
                     <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生</th><th>恩恵</th></tr>
                     <tr><td>A〜B</td><td>なし</td><td>天国</td></tr>
                     <tr><td>C〜D</td><td>低〜中</td><td>天国</td></tr>
                     <tr><td>E〜G</td><td>高〜100%</td><td><span class="highlight">ドキドキ以上</span></td></tr>
                 </table>
-                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px;">ベル特殊フラッシュ示唆</h4>
-                <div class="img-box">
-                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" alt="ベルフラッシュ">
-                </div>
-                <ul style="font-size: 0.8rem; padding-left: 15px;">
-                    <li><span class="highlight">パターン①：</span>通常。モードB期待度UP。</li>
-                    <li><span class="highlight">パターン②：</span>強。<b>モードC以上濃厚！</b></li>
-                </ul>
             </div>
         </details>
 
@@ -166,11 +197,11 @@
         <details>
             <summary>🌅 終了画面示唆</summary>
             <div class="details-inner">
-                <div class="screen-grid">
-                    <div class="screen-item sc-day"><b>昼</b><br>基本</div>
-                    <div class="screen-item sc-eve"><b>夕方</b><br>通常B期待</div>
-                    <div class="screen-item sc-night"><b>夜</b><br>通常B濃厚</div>
-                    <div class="screen-item sc-flower"><b>花</b><br>天国濃厚</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div style="background: linear-gradient(to bottom, #87CEEB, #F0E68C); padding: 10px; border-radius: 5px; color: #000; text-align: center; font-size: 0.7rem;"><b>昼</b><br>基本</div>
+                    <div style="background: linear-gradient(to bottom, #FF8C00, #B22222); padding: 10px; border-radius: 5px; text-align: center; font-size: 0.7rem;"><b>夕方</b><br>通常B期待</div>
+                    <div style="background: linear-gradient(to bottom, #191970, #4B0082); padding: 10px; border-radius: 5px; text-align: center; font-size: 0.7rem;"><b>夜</b><br>通常B濃厚</div>
+                    <div style="background: linear-gradient(to bottom, #FFB6C1, #FF69B4); padding: 10px; border-radius: 5px; color: #000; text-align: center; font-size: 0.7rem;"><b>花</b><br>天国濃厚</div>
                 </div>
             </div>
         </details>
@@ -214,30 +245,4 @@
                 if (thru === 0) border = kariLoop ? 150 : 280;
                 else if (thru === 1) border = kariLoop ? 150 : 200;
                 else if (thru === 2) border = kariLoop ? 120 : 150;
-                else if (thru === 3) border = kariLoop ? 150 : 200;
-                else if (thru === 4) border = 0;
-            }
-
-            if (games >= border) {
-                res.className = "safe"; res.innerHTML = `【GO】${border}Gクリア！<br>打っちゃえニッサン‼️`;
-            } else {
-                res.className = "danger"; res.innerHTML = `【待機】あと ${border - games}G`;
-            }
-        }
-
-        function saveData() {
-            const state = document.getElementById('state').selectedOptions[0].text.substring(0,2);
-            const thru = document.getElementById('thru').value;
-            const startG = document.getElementById('games').value || "-";
-            const winG = document.getElementById('win_games').value || "-";
-            const memo = document.getElementById('memo').value || "-";
-            const body = document.getElementById('historyBody');
-            const row = body.insertRow(0);
-            row.innerHTML = `<td>${state}</td><td>${thru}</td><td>${startG}</td><td>${winG}</td><td>${memo}</td>`;
-            document.getElementById('win_games').value = "";
-            document.getElementById('memo').value = "";
-            alert("保存完了！");
-        }
-    </script>
-</body>
-</html>
+                else if (thru ===
