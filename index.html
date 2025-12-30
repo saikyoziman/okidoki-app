@@ -2,48 +2,60 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖ドキ!DUO 極・攻略Navi 最終調整版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>沖ドキ!DUO 極・攻略Navi V8</title>
     <style>
         body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
-        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; }
-        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #888; font-weight: bold; }
+        
+        /* タブ切り替え */
+        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; height: 50px; }
+        .tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-weight: bold; font-size: 0.95rem; }
         .tab.active { background: #ff4444; color: #fff; border-radius: 7px; }
-        .content { display: none; }
+        
+        .content { display: none; width: 100%; }
         .content.active { display: block; }
 
-        .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; }
+        .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; box-sizing: border-box; }
         h1 { font-size: 1.1rem; color: #ffcc00; text-align: center; margin: 10px 0; }
         h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
 
-        label { display: block; margin-top: 10px; font-size: 0.8rem; color: #bbb; }
-        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: none; font-size: 1rem; box-sizing: border-box; }
-        input[type="number"], input[type="text"] { background: #eee; color: #000; }
-        .btn { background: #ff4444; color: white; padding: 14px; border: none; border-radius: 6px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; }
-        #result { margin-top: 15px; padding: 15px; border-radius: 6px; text-align: center; font-weight: bold; }
-        .safe { background: #2e7d32; }
-        .danger { background: #c62828; }
-        .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; }
+        /* 入力フォーム */
+        label { display: block; margin-top: 12px; font-size: 0.85rem; color: #bbb; font-weight: bold; }
+        select, input[type="number"], input[type="text"] { width: 100%; padding: 15px; margin-top: 5px; border-radius: 8px; border: none; font-size: 1rem; box-sizing: border-box; background: #eee; color: #000; -webkit-appearance: none; }
+        
+        /* チェックボックス行 */
+        .check-row { display: flex; align-items: center; margin-top: 15px; font-size: 0.9rem; line-height: 1; }
+        .check-row input[type="checkbox"] { width: 22px; height: 22px; margin-right: 10px; cursor: pointer; }
+
+        /* 判定ボタン（大型化） */
+        .btn-judge { background: #ff4444; color: white; padding: 20px; border: none; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 0 #b33030; active { transform: translateY(2px); box-shadow: none; } }
+        
+        .btn-save { background: #2196f3; color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; font-weight: bold; margin-top: 10px; }
+
+        #result { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; line-height: 1.5; font-size: 1.1rem; }
+        .safe { background: #2e7d32; border: 2px solid #a5d6a7; }
+        .danger { background: #c62828; border: 2px solid #ef9a9a; }
+        .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; border: 2px solid #fff; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
+        /* 解析DB（アコーディオン） */
         details { background: #2a2a2a; border-radius: 6px; margin-bottom: 10px; border: 1px solid #444; }
-        summary { padding: 15px; font-size: 0.95rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+        summary { padding: 15px; font-size: 0.95rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::after { content: '＋'; }
         details[open] summary::after { content: 'ー'; }
         .details-inner { padding: 10px; border-top: 1px solid #444; background: #333; }
 
         .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; margin-top: 5px; }
-        .info-table th, .info-table td { border: 1px solid #555; padding: 8px; text-align: left; }
+        .info-table th, .info-table td { border: 1px solid #555; padding: 10px; text-align: left; }
         .info-table th { background: #222; color: #ffcc00; }
         .highlight { color: #ff4444; font-weight: bold; }
         .blue-text { color: #00ffff; font-weight: bold; }
 
         .img-box { text-align: center; margin: 10px 0; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #555; }
         .img-box img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
-        .img-label { font-size: 0.75rem; color: #ffcc00; margin-top: 8px; font-weight: bold; }
 
         .screen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .screen-item { border-radius: 6px; padding: 10px; text-align: center; font-size: 0.75rem; border: 1px solid #555; line-height: 1.4; }
+        .screen-item { border-radius: 6px; padding: 12px; text-align: center; font-size: 0.75rem; border: 1px solid #555; line-height: 1.5; }
         .sc-day { background: linear-gradient(to bottom, #87CEEB, #F0E68C); color: #000; }
         .sc-eve { background: linear-gradient(to bottom, #FF8C00, #B22222); }
         .sc-night { background: linear-gradient(to bottom, #191970, #4B0082); }
@@ -51,7 +63,7 @@
 
         .history-wrap { overflow-x: auto; margin-top: 10px; }
         table.history-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 350px; }
-        .history-table th, .history-table td { border: 1px solid #555; padding: 6px; text-align: center; }
+        .history-table th, .history-table td { border: 1px solid #555; padding: 8px; text-align: center; }
     </style>
 </head>
 <body>
@@ -60,40 +72,52 @@
 
     <div class="tabs">
         <div id="btn-tool" class="tab active" onclick="showTab('tool')">判定ツール</div>
-        <div id="btn-analysis" class="tab" onclick="switchTab('analysis')">解析DB</div>
+        <div id="btn-analysis" class="tab" onclick="showTab('analysis')">解析DB</div>
     </div>
 
     <div id="content-tool" class="content active">
         <div class="card">
             <h3>期待値判定</h3>
-            <label>状況 / スルー回数</label>
-            <div style="display:flex; gap:10px;">
-                <select id="state" style="flex:2;">
-                    <option value="heaven">天国抜け後</option>
-                    <option value="reset">リセット後</option>
-                </select>
-                <select id="thru" style="flex:1;">
-                    <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option>
-                </select>
-            </div>
+            
+            <label>状況を選択</label>
+            <select id="state">
+                <option value="heaven">天国抜け後</option>
+                <option value="reset">リセット後</option>
+            </select>
+
+            <label>現在のスルー回数</label>
+            <select id="thru">
+                <option value="0">0回 (朝イチ or 天国直後)</option>
+                <option value="1">1回スルー</option>
+                <option value="2">2回スルー</option>
+                <option value="3">3回スルー</option>
+                <option value="4">4回スルー以上</option>
+            </select>
+
             <label>現在の回転数 (G)</label>
             <input type="number" id="games" placeholder="例: 150">
-            <div style="margin-top:15px; font-size: 0.85rem; line-height: 2;">
-                <input type="checkbox" id="kari_loop"> 仮天ループ中 / 
-                <input type="checkbox" id="dhc_fail"> DHC失敗後 / 
-                <input type="checkbox" id="flash2"> ベルフラ②発生
+
+            <div class="check-row">
+                <input type="checkbox" id="kari_loop"> <span class="blue-text">仮天ループ中</span>
             </div>
-            <button class="btn" onclick="runCheck()">判定：打っちゃえニッサン‼️</button>
+            <div class="check-row">
+                <input type="checkbox" id="dhc_fail"> <span style="color:#ffcc00;">DHC失敗後 (ドキハナ失敗)</span>
+            </div>
+            <div class="check-row">
+                <input type="checkbox" id="flash2"> <span style="color:#ef9a9a;">ベル特殊フラッシュ②発生</span>
+            </div>
+
+            <button class="btn-judge" onclick="runCheck()">期待値を判定する</button>
             <div id="result" style="display:none;"></div>
         </div>
 
         <div class="card">
-            <h3>実戦データ</h3>
+            <h3>実戦履歴</h3>
             <div style="display:flex; gap:10px;">
                 <input type="number" id="win_games" placeholder="当選G">
                 <input type="text" id="memo" placeholder="メモ">
             </div>
-            <button class="btn" style="background: #2196f3; margin-top:10px;" onclick="saveData()">履歴に保存</button>
+            <button class="btn-save" onclick="saveData()">履歴に保存</button>
             <div class="history-wrap">
                 <table class="history-table">
                     <thead><tr><th>状況</th><th>ス</th><th>開始</th><th>当選</th><th>メモ</th></tr></thead>
@@ -104,90 +128,61 @@
     </div>
 
     <div id="content-analysis" class="content">
-        
-        <details>
-            <summary>🌸 ドキハナモード A〜G & ベルフラッシュ示唆</summary>
+        <details open>
+            <summary>🌸 ドキハナモード & ベルフラッシュ</summary>
             <div class="details-inner">
                 <table class="info-table" style="font-size: 0.75rem;">
-                    <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生率</th><th>成功時恩恵</th></tr>
-                    <tr><td>モードA〜B</td><td>なし〜激低</td><td>天国以上</td></tr>
-                    <tr><td>モードC</td><td>低</td><td>天国以上</td></tr>
-                    <tr><td>モードD</td><td>中</td><td>天国以上</td></tr>
-                    <tr><td>モードE</td><td>高</td><td>天国以上</td></tr>
-                    <tr><td>モードF</td><td><span class="highlight">100%</span></td><td>天国以上</td></tr>
-                    <tr><td>モードG</td><td><span class="highlight">100%</span></td><td><span class="highlight">ドキドキ以上</span></td></tr>
+                    <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生</th><th>恩恵</th></tr>
+                    <tr><td>A〜B</td><td>なし</td><td>天国</td></tr>
+                    <tr><td>C〜D</td><td>低〜中</td><td>天国</td></tr>
+                    <tr><td>E〜G</td><td>高〜100%</td><td><span class="highlight">ドキドキ以上</span></td></tr>
                 </table>
-
-                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px; border-left:3px solid #ff4444; padding-left:8px;">ベル特殊フラッシュ示唆</h4>
-                
+                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px;">ベル特殊フラッシュ示唆</h4>
                 <div class="img-box">
-                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" alt="ベルフラッシュ画像">
-                    <div class="img-label">重要：リール周辺の光り方をチェック！</div>
+                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" alt="ベルフラッシュ">
                 </div>
-                
-                <table class="info-table">
-                    <tr>
-                        <th style="width:30%;">パターン①</th>
-                        <td>リール周辺が白くフラッシュ。<br><span class="blue-text">モードB以上</span>の期待度アップ。</td>
-                    </tr>
-                    <tr>
-                        <th style="width:30%;">パターン②</th>
-                        <td>リール全体が激しくフラッシュ。<br><span class="highlight">モードC以上濃厚！</span><br><span class="small-text">※D・E・G滞在にも期待できる激アツ演出。</span></td>
-                    </tr>
-                </table>
-
-                <div style="margin-top:12px; font-size: 0.8rem; background:#444; padding:8px; border-radius:5px;">
-                    <span class="highlight">【その他の確定示唆】</span><br>
-                    ● 33G目に告知が発生した時点で<span class="blue-text">モードC以上確定</span>。<br>
-                    ● ドキハナチャンス失敗時も<span class="highlight">50%でモードを維持</span>するため、次の当選まで続行推奨。
-                </div>
+                <ul style="font-size: 0.8rem; padding-left: 15px;">
+                    <li><span class="highlight">パターン①：</span>通常。モードB期待度UP。</li>
+                    <li><span class="highlight">パターン②：</span>強。<b>モードC以上濃厚！</b></li>
+                </ul>
             </div>
         </details>
 
         <details>
-            <summary>🌻 ハイビスカス特殊点滅 全18種</summary>
+            <summary>🌻 ハイビスカス特殊点滅 (18種)</summary>
             <div class="details-inner">
                 <table class="info-table">
-                    <tr style="background:#111;"><th colspan="2" class="blue-text" style="text-align:center;">通常B以上濃厚</th></tr>
-                    <tr><td>スロー点滅</td><td>高速点滅</td></tr>
-                    <tr><td>同時点滅</td><td>通常→同時点滅</td></tr>
-                    <tr style="background:#111;"><th colspan="2" class="blue-text" style="text-align:center;">天国以上濃厚</th></tr>
-                    <tr><td>片方のみ点滅</td><td>瞬き点滅</td></tr>
-                    <tr><td>3回点滅</td><td>だんだん高速</td></tr>
-                    <tr><td>右から点滅</td><td>リール回転点滅</td></tr>
-                    <tr><td>葉っぱのみ</td><td>花のみ点滅</td></tr>
-                    <tr style="background:#111;"><th colspan="2" class="highlight" style="text-align:center;">ドキドキ以上確定</th></tr>
-                    <tr><td>点灯のみ</td><td>左右2回ずつ点滅</td></tr>
-                    <tr><td>交互点滅</td><td>しだれ柳</td></tr>
+                    <tr><th colspan="2" class="blue-text" style="text-align:center;">通常B以上濃厚</th></tr>
+                    <tr><td>スロー/高速</td><td>同時点滅</td></tr>
+                    <tr><th colspan="2" class="blue-text" style="text-align:center;">天国以上濃厚</th></tr>
+                    <tr><td>片方のみ</td><td>瞬き点滅</td></tr>
+                    <tr><td>3回点滅</td><td>右から点滅</td></tr>
+                    <tr><th colspan="2" class="highlight" style="text-align:center;">ドキドキ以上確定</th></tr>
+                    <tr><td>点灯のみ</td><td>左右2回ずつ</td></tr>
                 </table>
             </div>
         </details>
 
         <details>
-            <summary>🌅 ボーナス終了画面の示唆(4種)</summary>
+            <summary>🌅 終了画面示唆</summary>
             <div class="details-inner">
                 <div class="screen-grid">
-                    <div class="screen-item sc-day"><b>【昼】</b><br>デフォルト<br>基本画面</div>
-                    <div class="screen-item sc-eve"><b>【夕方】</b><br>通常B以上<br>期待度アップ</div>
-                    <div class="screen-item sc-night"><b>【夜】</b><br>通常B以上<br>濃厚！</div>
-                    <div class="screen-item sc-flower"><b>【花吹雪】</b><br>天国以上<br>濃厚！</div>
+                    <div class="screen-item sc-day"><b>昼</b><br>基本</div>
+                    <div class="screen-item sc-eve"><b>夕方</b><br>通常B期待</div>
+                    <div class="screen-item sc-night"><b>夜</b><br>通常B濃厚</div>
+                    <div class="screen-item sc-flower"><b>花</b><br>天国濃厚</div>
                 </div>
             </div>
         </details>
-
-        <p style="font-size: 0.65rem; text-align: center; color: #555; margin-top: 20px;">
-            引用元：ちょんぼりすた様 / 編集：天才仕事人
-        </p>
     </div>
 
     <script>
         function showTab(tabName) {
-            document.getElementById('content-tool').classList.remove('active');
-            document.getElementById('content-analysis').classList.remove('active');
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById('content-' + tabName).classList.add('active');
-            document.getElementById('btn-tool').classList.remove('active');
-            document.getElementById('btn-analysis').classList.remove('active');
             document.getElementById('btn-' + tabName).classList.add('active');
+            window.scrollTo(0, 0);
         }
 
         function runCheck() {
@@ -201,13 +196,13 @@
             res.style.display = "block";
 
             if (thru <= 3 && games > 400) {
-                res.className = "danger"; res.innerHTML = "【NG】400G超えは深追い厳禁！"; return;
+                res.className = "danger"; res.innerHTML = "【NG】400G超えは深追い厳禁！<br>期待値が大幅に下がります"; return;
             }
             if (dhcFail) {
                 res.className = "sss"; res.innerHTML = "【SSS】DHC失敗ループ狙い！<br>打っちゃえニッサン‼️"; return;
             }
             if (flash2) {
-                res.className = "safe"; res.innerHTML = "【B濃厚】全ツッパ！<br>打っちゃえニッサン‼️"; return;
+                res.className = "safe"; res.innerHTML = "【モードB以上濃厚】ツッパ推奨！<br>打っちゃえニッサン‼️"; return;
             }
 
             let border = 999;
@@ -241,6 +236,7 @@
             row.innerHTML = `<td>${state}</td><td>${thru}</td><td>${startG}</td><td>${winG}</td><td>${memo}</td>`;
             document.getElementById('win_games').value = "";
             document.getElementById('memo').value = "";
+            alert("保存完了！");
         }
     </script>
 </body>
