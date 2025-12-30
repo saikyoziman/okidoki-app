@@ -1,1 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沖ドキ!DUO 実戦管理ツール</title>
+    <style>
+        body { font-family: sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; }
+        .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; }
+        h1 { font-size: 1.2rem; color: #ffcc00; text-align: center; margin-bottom: 20px; }
+        h3 { margin-top: 0; color: #ffcc00; font-size: 1rem; border-bottom: 1px solid #555; padding-bottom: 5px; }
+        label { display: block; margin-top: 10px; font-size: 0.85rem; color: #ccc; }
+        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 5px; border: none; font-size: 1rem; box-sizing: border-box; }
+        input[type="number"], input[type="text"] { background: #eee; color: #000; }
+        .btn { background: #ff4444; color: white; padding: 12px; border: none; border-radius: 5px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .btn-save { background: #2196f3; margin-top: 15px; border: 1px solid #fff; }
+        #result { margin-top: 15px; padding: 15px; border-radius: 5px; text-align: center; font-weight: bold; font-size: 1.1rem; }
+        .safe { background: #2e7d32; color: white; }
+        .danger { background: #c62828; color: white; }
+        .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.75rem; min-width: 400px; }
+        th, td { border: 1px solid #555; padding: 8px; text-align: center; }
+        th { background: #444; color: #ffcc00; }
+        tr:nth-child(even) { background: #3a3a3a; }
+    </style>
+</head>
+<body>
 
+    <h1>🌺 沖ドキ!DUO 実戦管理ツール</h1>
+
+    <div class="card">
+        <h3>1. 狙い目判定</h3>
+        <label>状況</label>
+        <select id="state">
+            <option value="heaven">天国抜け後</option>
+            <option value="reset">リセット後</option>
+        </select>
+        <label>スルー回数</label>
+        <select id="thru">
+            <option value="0">0スルー</option>
+            <option value="1">1スルー</option>
+            <option value="2">2スルー</option>
+            <option value="3">3スルー</option>
+            <option value="4">4スルー以上</option>
+        </select>
+        <label>打ち始め (G)</label>
+        <input type="number" id="games" placeholder="例: 150">
+        <label>特殊条件</label>
+        <div style="margin-top:10px; line-height: 2.2; font-size: 0.9rem;">
+            <input type="checkbox" id="kari_loop" style="width:auto;"> <span style="color:#00ffff;">仮天ループ中</span> / 
+            <input type="checkbox" id="dhc_fail" style="width:auto;"> <span style="color:#ffcc00;">DHC失敗後</span><br>
+            <input type="checkbox" id="over2500" style="width:auto;"> 2500枚or有利切断 / 
+            <input type="checkbox" id="flash2" style="width:auto;"> ベルフラ②
+        </div>
+        <button class="btn" onclick="checkExpectation()">期待値を判定</button>
+        <div id="result" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+        <h3>2. 当選データ入力</h3>
+        <label>当選ゲーム数 (G)</label>
+        <input type="number" id="win_games" placeholder="実際に当たったG数">
+        <label>実戦メモ</label>
+        <input type="text" id="memo" placeholder="例: 夕方、ドキハナ失敗等">
+        <button class="btn btn-save" onclick="saveRecord()">実戦データを履歴に保存</button>
+    </div>
+
+    <div class="card">
+        <h3>📊 稼働履歴集計</h3>
+        <div class="table-container">
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>状況</th>
+                        <th>スルー</th>
+                        <th>開始G</th>
+                        <th>当選G</th>
+                        <th>メモ</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function checkExpectation() {
+            const state = document.getElementById('state').value;
+            const thru = parseInt(document.getElementById('thru').value);
+            const games = parseInt(document.getElementById('games').value) || 0;
+            const kariLoop = document.getElementById('kari_loop').checked;
+            const dhcFail = document.getElementById('dhc_fail').checked;
+            const over2500 = document.getElementById('over2500').checked;
+            const flash2 = document.getElementById('flash2').checked;
+            
+            const resDiv = document.getElementById('result');
+            resDiv.style.display = "block";
+            
+            if (thru <= 3 && games > 400) {
+                resDiv.className = "danger";
+                resDiv.innerHTML = "【NG】400G超えは深追い厳禁！";
+                return;
+            }
+            if (dhcFail || over2500) {
+                resDiv.className = "sss";
+                resDiv.innerHTML = "【SSS級】期待値最高！<br>打っちゃえニッサン‼️";
+                return;
+            }
+            if (flash2) {
+                resDiv.className = "safe";
+                resDiv.innerHTML = "【モードB濃厚】<br>打っちゃえニッサン‼️";
+                return;
+            }
+
+            let border = 999;
+            if (state === "reset") {
+                if (thru === 0) border = 230;
+                else if (thru === 1) border = kariLoop ? 150 : 220;
+                else border = 150; 
+            } else {
+                if (thru === 0) border = kariLoop ? 150 : 280;
+                else if (thru === 1) border = kariLoop ? 150 : 200;
+                else if (thru === 2) border = kariLoop ? 120 : 150;
+                else if (thru === 3) border = kariLoop ? 150 : 200;
+                else if (thru === 4) border = 0;
+            }
+
+            if (games >= border) {
+                resDiv.className = "safe";
+                resDiv.innerHTML = `【狙い目】${border}Gクリア！<br>打っちゃえニッサン‼️`;
+            } else {
+                resDiv.className = "danger";
+                resDiv.innerHTML = `【待機】あと ${border - games}G 必要`;
+            }
+        }
+
+        function saveRecord() {
+            const state = document.getElementById('state').selectedOptions[0].text;
+            const thru = document.getElementById('thru').value;
+            const startG = document.getElementById('games').value || "-";
+            const winG = document.getElementById('win_games').value || "-";
+            const memoText = document.getElementById('memo').value || "-";
+            
+            const tbody = document.getElementById('historyBody');
+            const row = tbody.insertRow(0);
+            row.innerHTML = `<td>${state}</td><td>${thru}</td><td>${startG}</td><td>${winG}</td><td>${memoText}</td>`;
+            
+            document.getElementById('win_games').value = "";
+            document.getElementById('memo').value = "";
+            alert("データを保存しました！");
+        }
+    </script>
+</body>
+</html>
