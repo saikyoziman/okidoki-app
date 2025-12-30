@@ -3,218 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖ドキ!DUO 完全攻略ツール V2.1</title>
+    <title>沖ドキ!DUO 超・攻略ツール V3</title>
     <style>
         body { font-family: sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; }
-        .tabs { display: flex; margin-bottom: 15px; border-bottom: 2px solid #555; background: #222; border-radius: 8px 8px 0 0; overflow: hidden; }
-        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #aaa; font-weight: bold; transition: 0.3s; }
+        .tabs { display: flex; margin-bottom: 10px; background: #222; border-radius: 8px; overflow: hidden; border: 1px solid #444; }
+        .tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; color: #aaa; font-weight: bold; }
         .tab.active { background: #ff4444; color: #fff; }
         .content { display: none; }
-        .content.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .content.active { display: block; }
         
-        .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; }
-        h1 { font-size: 1.2rem; color: #ffcc00; text-align: center; margin-bottom: 15px; text-shadow: 1px 1px 2px #000; }
-        h3 { margin-top: 0; color: #ffcc00; font-size: 1rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
+        .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #444; }
+        h1 { font-size: 1.1rem; color: #ffcc00; text-align: center; margin-bottom: 10px; text-shadow: 1px 1px 2px #000; }
+        h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; }
         
-        label { display: block; margin-top: 10px; font-size: 0.85rem; color: #ccc; }
-        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 5px; border: none; font-size: 1rem; box-sizing: border-box; }
-        input[type="number"], input[type="text"] { background: #eee; color: #000; }
-        .btn { background: #ff4444; color: white; padding: 12px; border: none; border-radius: 5px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; }
-        .btn-save { background: #2196f3; margin-top: 15px; border: 1px solid #fff; }
-        #result { margin-top: 15px; padding: 15px; border-radius: 5px; text-align: center; font-weight: bold; font-size: 1.1rem; }
-        .safe { background: #2e7d32; color: white; }
-        .danger { background: #c62828; color: white; }
+        /* ツール用スタイル */
+        label { display: block; margin-top: 8px; font-size: 0.8rem; color: #ccc; }
+        select, input { width: 100%; padding: 10px; margin-top: 4px; border-radius: 5px; border: none; font-size: 1rem; box-sizing: border-box; }
+        .btn { background: #ff4444; color: white; padding: 12px; border: none; border-radius: 5px; width: 100%; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        #result { margin-top: 10px; padding: 12px; border-radius: 5px; text-align: center; font-weight: bold; }
+        .safe { background: #2e7d32; }
+        .danger { background: #c62828; }
         .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; margin-top: 5px; }
-        .info-table th, .info-table td { border: 1px solid #555; padding: 8px; text-align: left; vertical-align: middle; }
-        .info-table th { background: #444; color: #ffcc00; width: 35%; }
+        /* アコーディオン形式 */
+        details { background: #222; border-radius: 5px; margin-bottom: 8px; border: 1px solid #444; overflow: hidden; }
+        summary { padding: 12px; font-size: 0.9rem; font-weight: bold; color: #ffcc00; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #777; }
+        details[open] summary::after { content: '▲'; }
+        .details-content { padding: 10px; border-top: 1px solid #444; font-size: 0.8rem; line-height: 1.5; }
+
+        .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        .info-table th, .info-table td { border: 1px solid #555; padding: 6px; text-align: left; }
+        .info-table th { background: #333; color: #ffcc00; font-size: 0.75rem; }
         .highlight { color: #ff4444; font-weight: bold; }
         .blue-text { color: #00ffff; font-weight: bold; }
-        ul { padding-left: 18px; font-size: 0.85rem; color: #ddd; margin: 5px 0; }
-        li { margin-bottom: 6px; }
 
-        .table-container { overflow-x: auto; }
-        table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.75rem; min-width: 400px; }
-        th, td { border: 1px solid #555; padding: 8px; text-align: center; }
-        th { background: #444; color: #ffcc00; }
+        .history-container { overflow-x: auto; margin-top: 10px; }
+        table.history-table { width: 100%; font-size: 0.7rem; border-collapse: collapse; color: #eee; }
+        table.history-table th { background: #444; padding: 5px; }
+        table.history-table td { border: 1px solid #444; padding: 5px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <h1>🌺 沖ドキ!DUO 完全攻略ツール</h1>
+    <h1>🌺 沖ドキ!DUO 攻略Navi</h1>
 
     <div class="tabs">
-        <div id="tab-tool" class="tab active" onclick="switchTab('tool')">判定ツール</div>
-        <div id="tab-analysis" class="tab" onclick="switchTab('analysis')">解析情報</div>
+        <div id="tab-tool" class="tab active" onclick="switchTab('tool')">ツール</div>
+        <div id="tab-analysis" class="tab" onclick="switchTab('analysis')">解析DB</div>
     </div>
 
     <div id="tool" class="content active">
         <div class="card">
-            <h3>1. 狙い目判定</h3>
-            <label>状況</label>
-            <select id="state">
-                <option value="heaven">天国抜け後</option>
-                <option value="reset">リセット後</option>
-            </select>
-            <label>スルー回数</label>
-            <select id="thru">
-                <option value="0">0スルー</option>
-                <option value="1">1スルー</option>
-                <option value="2">2スルー</option>
-                <option value="3">3スルー</option>
-                <option value="4">4スルー以上</option>
-            </select>
-            <label>打ち始め (G)</label>
+            <label>状況 / スルー</label>
+            <div style="display: flex; gap: 5px;">
+                <select id="state" style="flex: 1.5;">
+                    <option value="heaven">天国抜け後</option>
+                    <option value="reset">リセット後</option>
+                </select>
+                <select id="thru" style="flex: 1;">
+                    <option value="0">0スルー</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option>
+                </select>
+            </div>
+            <label>現在の回転数 (G)</label>
             <input type="number" id="games" placeholder="例: 150">
-            <label>条件チェック</label>
-            <div style="margin-top:10px; line-height: 2.2; font-size: 0.85rem;">
-                <input type="checkbox" id="kari_loop" style="width:auto;"> <span class="blue-text">仮天ループ中</span> / 
-                <input type="checkbox" id="dhc_fail" style="width:auto;"> <span style="color:#ffcc00;">DHC失敗後</span><br>
-                <input type="checkbox" id="over2500" style="width:auto;"> 2500枚or有利切断 / 
-                <input type="checkbox" id="flash2" style="width:auto;"> ベルフラ②
-            </div>
-            <button class="btn" onclick="checkExpectation()">期待値を判定</button>
-            <div id="result" style="display:none;"></div>
-        </div>
-
-        <div class="card">
-            <h3>2. 実戦データ入力</h3>
-            <input type="number" id="win_games" placeholder="当たったG数">
-            <input type="text" id="memo" style="margin-top:10px;" placeholder="メモ: 夕方、ドキハナ失敗等">
-            <button class="btn btn-save" onclick="saveRecord()">履歴に保存</button>
-        </div>
-
-        <div class="card">
-            <div class="table-container">
-                <table id="historyTable">
-                    <thead>
-                        <tr><th>状況</th><th>スルー</th><th>開始</th><th>当選</th><th>メモ</th></tr>
-                    </thead>
-                    <tbody id="historyBody"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div id="analysis" class="content">
-        <div class="card">
-            <h3>💡 特殊点滅の示唆（重要）</h3>
-            <table class="info-table">
-                <tr><th>スロー/高速</th><td><span class="highlight">通常B以上</span>濃厚</td></tr>
-                <tr><th>同時点滅</th><td><span class="highlight">通常B以上</span>濃厚</td></tr>
-                <tr><th>片方点滅</th><td><span class="blue-text">天国以上</span>濃厚</td></tr>
-                <tr><th>瞬き点滅</th><td><span class="blue-text">天国以上</span>濃厚</td></tr>
-                <tr><th>だんだん/右から</th><td><span class="blue-text">天国以上</span>濃厚</td></tr>
-                <tr><th>点灯のみ</th><td><span class="blue-text">ドキドキ以上</span>濃厚！</td></tr>
-            </table>
-        </div>
-
-        <div class="card">
-            <h3>🌸 ドキハナモード解析</h3>
-            <ul style="font-size: 0.8rem;">
-                <li><span class="highlight">モードA/B：</span>DHC発生せず。</li>
-                <li><span class="highlight">モードC：</span>発生率 低・成功期待度 <span class="blue-text">50%</span>。</li>
-                <li><span class="highlight">モードD：</span>発生率 中・成功期待度 <span class="blue-text">100%</span>。</li>
-                <li><span class="highlight">モードE：</span>発生率 高・成功時 <span class="blue-text">ドキドキ移行</span>！</li>
-            </ul>
-            <p style="font-size: 0.75rem; color:#ccc; margin-top:5px; padding:5px; border-top:1px dashed #555;">
-                ※失敗時は上位モードを維持しやすい（50%ループ）。
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>📖 モード天井・終了画面</h3>
-            <table class="info-table">
-                <tr><th>通常A/B</th><td>天井<span class="highlight">800G</span></td></tr>
-                <tr><th>チャンス</th><td>天井<span class="highlight">200G</span></td></tr>
-                <tr><th>終了画面 夕方</th><td><span class="blue-text">通常B以上</span>期待度UP</td></tr>
-                <tr><th>終了画面 夜</th><td><span class="blue-text">通常B以上</span>濃厚！</td></tr>
-            </table>
-        </div>
-        <p style="font-size: 0.7rem; text-align: center; color: #777;">引用元：ちょんぼりすた様</p>
-    </div>
-
-    <script>
-        // タブ切り替え機能（修正済み）
-        function switchTab(tabId) {
-            // 全てのコンテンツを非表示にする
-            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-            // 全てのタブのactiveを解除
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            
-            // 指定されたコンテンツとタブを有効にする
-            document.getElementById(tabId).classList.add('active');
-            document.getElementById('tab-' + tabId).classList.add('active');
-        }
-
-        function checkExpectation() {
-            const state = document.getElementById('state').value;
-            const thru = parseInt(document.getElementById('thru').value);
-            const games = parseInt(document.getElementById('games').value) || 0;
-            const kariLoop = document.getElementById('kari_loop').checked;
-            const dhcFail = document.getElementById('dhc_fail').checked;
-            const over2500 = document.getElementById('over2500').checked;
-            const flash2 = document.getElementById('flash2').checked;
-            
-            const resDiv = document.getElementById('result');
-            resDiv.style.display = "block";
-            
-            if (thru <= 3 && games > 400) {
-                resDiv.className = "danger";
-                resDiv.innerHTML = "【NG】400G超えは深追い厳禁！";
-                return;
-            }
-            if (dhcFail || over2500) {
-                resDiv.className = "sss";
-                resDiv.innerHTML = "【SSS級】期待値最高！<br>打っちゃえニッサン‼️";
-                return;
-            }
-            if (flash2) {
-                resDiv.className = "safe";
-                resDiv.innerHTML = "【モードB濃厚】<br>打っちゃえニッサン‼️";
-                return;
-            }
-
-            let border = 999;
-            if (state === "reset") {
-                if (thru === 0) border = 230;
-                else if (thru === 1) border = kariLoop ? 150 : 220;
-                else border = 150; 
-            } else {
-                if (thru === 0) border = kariLoop ? 150 : 280;
-                else if (thru === 1) border = kariLoop ? 150 : 200;
-                else if (thru === 2) border = kariLoop ? 120 : 150;
-                else if (thru === 3) border = kariLoop ? 150 : 200;
-                else if (thru === 4) border = 0;
-            }
-
-            if (games >= border) {
-                resDiv.className = "safe";
-                resDiv.innerHTML = `【狙い目】${border}Gクリア！<br>打っちゃえニッサン‼️`;
-            } else {
-                resDiv.className = "danger";
-                resDiv.innerHTML = `【待機】あと ${border - games}G`;
-            }
-        }
-
-        function saveRecord() {
-            const state = document.getElementById('state').selectedOptions[0].text;
-            const thru = document.getElementById('thru').value;
-            const startG = document.getElementById('games').value || "-";
-            const winG = document.getElementById('win_games').value || "-";
-            const memoText = document.getElementById('memo').value || "-";
-            
-            const tbody = document.getElementById('historyBody');
-            const row = tbody.insertRow(0);
-            row.innerHTML = `<td>${state}</td><td>${thru}</td><td>${startG}</td><td>${winG}</td><td>${memoText}</td>`;
-            
-            document.getElementById('win_games').value = "";
-            document.getElementById('memo').value = "";
-            alert("データを保存しました！");
-        }
-    </script>
-</body>
-</html>
+            <div style="margin-top:10px; font-size: 0.75rem; color:#ccc;">
+                <input type="checkbox" id="kari_loop"> 仮天ループ / 
+                <input type="checkbox" id="dhc_fail"> DHC失敗後
