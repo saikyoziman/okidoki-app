@@ -3,32 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>沖ドキ!DUO 完全攻略Navi V11.1</title>
+    <title>沖ドキ!DUO 極・攻略Navi 最終仕様</title>
     <style>
         /* 1. 基本設定 */
-        body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; -webkit-text-size-adjust: 100%; }
+        body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
         
-        /* 2. タブメニュー（確実に反応する設計） */
-        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; height: 55px; cursor: pointer; }
-        .tab { flex: 1; display: flex; align-items: center; justify-content: center; color: #888; font-weight: bold; font-size: 1rem; border-radius: 7px; transition: 0.2s; }
-        .tab.active { background: #ff4444 !important; color: #fff !important; }
+        /* 2. タブ切り替え（確実に画面を入れ替えるための設定） */
+        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; height: 55px; }
+        .tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-weight: bold; font-size: 1rem; -webkit-tap-highlight-color: transparent; }
+        .tab.active { background: #ff4444; color: #fff; border-radius: 7px; }
         
-        /* 3. コンテンツの表示・非表示 */
-        .content { display: none; width: 100%; }
-        .content.active { display: block !important; }
+        /* コンテンツの表示・非表示を厳格に管理 */
+        .content-page { display: none; width: 100%; }
+        .content-page.active { display: block !important; }
 
-        /* 4. カードデザイン */
+        /* 3. カードデザイン */
         .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; box-sizing: border-box; }
+        h1 { font-size: 1.1rem; color: #ffcc00; text-align: center; margin: 10px 0; }
         h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
 
-        /* 5. 判定ツール入力フォーム */
+        /* 4. 判定ツール：入力フォーム */
         label { display: block; margin-top: 12px; font-size: 0.85rem; color: #bbb; font-weight: bold; }
         select, input[type="number"], input[type="text"] { width: 100%; padding: 15px; margin-top: 5px; border-radius: 8px; border: none; font-size: 1.1rem; box-sizing: border-box; background: #eee; color: #000; -webkit-appearance: none; }
+        
         .check-row { display: flex; align-items: center; margin-top: 15px; font-size: 0.9rem; line-height: 1.2; }
         .check-row input[type="checkbox"] { width: 26px; height: 26px; margin-right: 12px; cursor: pointer; flex-shrink: 0; }
 
         /* 判定ボタン（超大型） */
-        .btn-judge { background: #ff4444; color: white; padding: 25px; border: none; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.3rem; box-shadow: 0 5px 0 #b33030; -webkit-tap-highlight-color: transparent; }
+        .btn-judge { background: #ff4444; color: white; padding: 25px; border: none; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.3rem; box-shadow: 0 5px 0 #b33030; }
         .btn-judge:active { transform: translateY(2px); box-shadow: none; }
         
         #result { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; line-height: 1.5; font-size: 1.2rem; display: none; }
@@ -37,8 +39,8 @@
         .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; border: 2px solid #fff; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        /* 6. 解析DB（アコーディオン機能） */
-        details { background: #2a2a2a; border-radius: 6px; margin-bottom: 10px; border: 1px solid #444; width: 100%; }
+        /* 5. 解析DB：アコーディオン */
+        details { background: #2a2a2a; border-radius: 6px; margin-bottom: 10px; border: 1px solid #444; }
         summary { padding: 15px; font-size: 1rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::-webkit-details-marker { display: none; }
         summary::after { content: '＋'; font-size: 1.2rem; }
@@ -59,11 +61,11 @@
     <h1 style="text-align:center; font-size:1.1rem; color:#ffcc00; margin:10px 0;">🌺 沖ドキ!DUO 完全攻略Navi</h1>
 
     <div class="tabs">
-        <div id="tab-tool-btn" class="tab active" onclick="switchContent('tool')">判定ツール</div>
-        <div id="tab-db-btn" class="tab" onclick="switchContent('db')">解析DB</div>
+        <div id="tab-tool-btn" class="tab active" onclick="changePage('tool')">判定ツール</div>
+        <div id="tab-db-btn" class="tab" onclick="changePage('db')">解析DB</div>
     </div>
 
-    <div id="content-tool" class="content active">
+    <div id="page-tool" class="content-page active">
         <div class="card">
             <h3>期待値判定</h3>
             <label>状況を選択</label>
@@ -114,17 +116,17 @@
         </div>
     </div>
 
-    <div id="content-db" class="content">
+    <div id="page-db" class="content-page">
         
         <details open>
-            <summary>🌸 特殊フラッシュ示唆 (画像1より)</summary>
+            <summary>🌸 特殊フラッシュ示唆演出</summary>
             <div class="details-inner">
                 <table class="info-table">
                     <tr style="background:#111; color:#ffcc00;"><th>フラッシュ</th><th>示唆内容</th></tr>
-                    <tr><td><div class="flash-box">← ← ←</div>リプレイ①</td><td>モードB期待度UP</td></tr>
-                    <tr><td><div class="flash-box">↓ ↓ ↓</div>リプレイ②</td><td>モードD期待度UP ＋<br>B期待度UP(強)</td></tr>
-                    <tr><td><div class="flash-box">↑ ↑ ↑</div>ベル① ※</td><td>モードB以上濃厚</td></tr>
-                    <tr><td><div class="flash-box">→→→<br>↓↓↓</div>ベル②</td><td>モードD以上濃厚</td></tr>
+                    <tr><td><div class="flash-box">← ← ←</div>リプレイ特殊①</td><td>ドキハナモード<br><b>B期待度UP</b></td></tr>
+                    <tr><td><div class="flash-box">↓ ↓ ↓</div>リプレイ特殊②</td><td>ドキハナモード<br><b>D期待度UP ＋ B期待度UP(強)</b></td></tr>
+                    <tr><td><div class="flash-box">↑ ↑ ↑</div>ベル特殊① ※</td><td>ドキハナモード<br><span class="blue-text">B以上濃厚</span></td></tr>
+                    <tr><td><div class="flash-box">→→→<br>↓↓↓</div>ベル特殊②</td><td>ドキハナモード<br><span class="highlight">D以上濃厚</span></td></tr>
                 </table>
                 <div style="margin-top:10px; text-align:center;">
                     <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" style="max-width:100%; border-radius:5px;" alt="特殊フラッシュ">
@@ -133,57 +135,57 @@
         </details>
 
         <details>
-            <summary>🌸 ドキハナモード A〜G (画像2より)</summary>
+            <summary>🌸 ドキハナモード A〜G 解析まとめ</summary>
             <div class="details-inner">
                 <table class="info-table">
                     <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>特徴</th></tr>
-                    <tr><td>モードA</td><td>昇格時はモードBへ</td></tr>
-                    <tr><td>モードB</td><td>昇格時はモードDへ<br>(稀にCへ行くケースあり)</td></tr>
-                    <tr><td>モードC</td><td>昇格時はモードFへ</td></tr>
-                    <tr><td>モードD</td><td>DHC発生＆モードEへの昇格アリ</td></tr>
-                    <tr><td>モードE</td><td>DHC発生かつ50%で超DHC<br>＆Fへの昇格アリ</td></tr>
-                    <tr><td>モードF</td><td>主にモードCから移行＆超DHC発生</td></tr>
-                    <tr><td>モードG</td><td>アンコール移行時に必ず移行<br>＆DHC発生かつ20%で超DHC</td></tr>
+                    <tr><td>モードA</td><td>昇格時はドキハナモードBへ</td></tr>
+                    <tr><td>モードB</td><td>昇格時はドキハナモードDへ<br>(稀にCへ行くケースあり)</td></tr>
+                    <tr><td>モードC</td><td>昇格時はドキハナモードFへ</td></tr>
+                    <tr><td>モードD</td><td>ドキハナチャンスが発生＆モードEへの昇格アリ</td></tr>
+                    <tr><td>モードE</td><td>ドキハナチャンス発生かつ50%で超DHC＆Fへの昇格アリ</td></tr>
+                    <tr><td>モードF</td><td>主にモードCから移行＆超ドキハナチャンス発生</td></tr>
+                    <tr><td>モードG</td><td>アンコール移行時に必ず移行＆DHC発生かつ20%で超DHC</td></tr>
                 </table>
-                <p style="font-size:0.7rem; color:#ccc; margin-top:8px;">ボーナス間ハマり時やアンコール移行時にモード昇格。</p>
+                <p style="font-size: 0.7rem; color: #ccc; margin-top: 10px;">ボーナス間ハマり時やアンコール移行時にモード昇格。</p>
             </div>
         </details>
 
         <details>
-            <summary>🌻 ハイビスカス点滅 全26種 (画像3より)</summary>
+            <summary>🌻 ハイビスカス点滅パターン 全26種</summary>
             <div class="details-inner">
                 <table class="info-table">
-                    <tr style="background:#111;"><th colspan="2" class="blue-text">【通常B以上 期待度UP】</th></tr>
-                    <tr><td colspan="2">だんだん高速 / 高速点滅 / スロー点滅</td></tr>
-                    <tr style="background:#111;"><th colspan="2" class="blue-text">【通常B以上 濃厚】</th></tr>
-                    <tr><td colspan="2">通常から同時点滅 / 同時点滅 / スロー→高速点滅</td></tr>
-                    <tr style="background:#111;"><th colspan="2" style="color:#ffcc00;">【天国 期待度UP】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" class="blue-text" style="text-align:center;">通常B以上 期待度UP</th></tr>
+                    <tr><td colspan="2">だんだん高速点滅 / 高速点滅 / スロー点滅</td></tr>
+                    <tr style="background:#111;"><th colspan="2" class="blue-text" style="text-align:center;">通常B以上 濃厚</th></tr>
+                    <tr><td colspan="2">通常点滅から同時点滅 / 同時点滅 / スロー→高速点滅</td></tr>
+                    <tr style="background:#111;"><th colspan="2" style="color:#ffcc00; text-align:center;">天国 期待度UP</th></tr>
                     <tr><td colspan="2">337拍子 / 花だけ点滅(DUOモード期待度UP)</td></tr>
-                    <tr style="background:#111;"><th colspan="2" style="color:#ffeb3b;">【スルー規定回数 示唆】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" style="color:#ffeb3b; text-align:center;">スルー規定回数 示唆</th></tr>
                     <tr><td colspan="2">葉っぱだけ点滅 / 右葉っぱ点滅 / 左葉っぱ点滅</td></tr>
-                    <tr style="background:#111;"><th colspan="2" style="color:#00ffff;">【天国以上 濃厚】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" style="color:#00ffff; text-align:center;">天国以上 濃厚</th></tr>
                     <tr><td colspan="2">右のみ点滅 / 点灯時パネル消灯</td></tr>
-                    <tr style="background:#111;"><th colspan="2" style="color:#ff69b4;">【天国以上 ＋ ドキドキ期待度UP】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" style="color:#ff69b4; text-align:center;">天国以上 ＋ ドキドキ期待度UP</th></tr>
                     <tr><td colspan="2">カラフル点滅</td></tr>
-                    <tr style="background:#111;"><th colspan="2" class="highlight">【ドキドキ以上 濃厚】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" class="highlight" style="text-align:center;">ドキドキ以上 濃厚</th></tr>
                     <tr><td colspan="2">左のみ点滅</td></tr>
-                    <tr style="background:#111;"><th colspan="2" class="highlight">【超ドキドキ 濃厚】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" class="highlight" style="text-align:center;">超ドキドキ 濃厚</th></tr>
                     <tr><td colspan="2">通常点滅＋ドキドキランプ点灯 / しだれ柳</td></tr>
-                    <tr style="background:#111;"><th colspan="2" style="color:#00ffff;">【DUOモード 濃厚】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" style="color:#00ffff; text-align:center;">DUOモード 濃厚</th></tr>
                     <tr><td colspan="2">花だけ点滅 ＋ パネル消灯</td></tr>
-                    <tr style="background:#111;"><th colspan="2" style="color:#777;">【その他】</th></tr>
+                    <tr style="background:#111;"><th colspan="2" style="color:#777; text-align:center;">その他</th></tr>
                     <tr><td colspan="2">通常点滅 ＋ アンランプ点灯 (のるかなチャンス!?)</td></tr>
                 </table>
             </div>
         </details>
 
         <details>
-            <summary>🌅 ボーナス終了画面示唆</summary>
+            <summary>🌅 ボーナス終了画面示唆 (4種カラーガイド)</summary>
             <div class="details-inner">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                     <div style="background: linear-gradient(to bottom, #87CEEB, #F0E68C); padding: 12px; border-radius: 5px; color: #000; text-align: center; font-size: 0.75rem;"><b>昼</b><br>基本</div>
-                    <div style="background: linear-gradient(to bottom, #FF8C00, #B22222); padding: 12px; border-radius: 5px; text-align: center; font-size: 0.75rem;"><b>夕方</b><br>B期待</div>
-                    <div style="background: linear-gradient(to bottom, #191970, #4B0082); padding: 12px; border-radius: 5px; text-align: center; font-size: 0.75rem;"><b>夜</b><br>B濃厚</div>
+                    <div style="background: linear-gradient(to bottom, #FF8C00, #B22222); padding: 12px; border-radius: 5px; text-align: center; font-size: 0.75rem;"><b>夕方</b><br>通常B期待</div>
+                    <div style="background: linear-gradient(to bottom, #191970, #4B0082); padding: 12px; border-radius: 5px; text-align: center; font-size: 0.75rem;"><b>夜</b><br>通常B濃厚</div>
                     <div style="background: linear-gradient(to bottom, #FFB6C1, #FF69B4); padding: 12px; border-radius: 5px; color: #000; text-align: center; font-size: 0.75rem;"><b>花</b><br>天国濃厚</div>
                 </div>
             </div>
@@ -191,52 +193,57 @@
     </div>
 
     <script>
-        // タブ切り替え（最も確実な方式）
-        function switchContent(target) {
-            const toolContent = document.getElementById('content-tool');
-            const dbContent = document.getElementById('content-db');
-            const toolBtn = document.getElementById('tab-tool-btn');
-            const dbBtn = document.getElementById('tab-db-btn');
+        // ページ切り替え機能（確実に片方を消して片方を出す）
+        function changePage(page) {
+            const pageTool = document.getElementById('page-tool');
+            const pageDb = document.getElementById('page-db');
+            const btnTool = document.getElementById('tab-tool-btn');
+            const btnDb = document.getElementById('tab-db-btn');
 
-            if (target === 'tool') {
-                toolContent.style.display = 'block';
-                dbContent.style.display = 'none';
-                toolBtn.classList.add('active');
-                dbBtn.classList.remove('active');
+            if (page === 'tool') {
+                pageTool.classList.add('active');
+                pageDb.classList.remove('active');
+                btnTool.classList.add('active');
+                btnDb.classList.remove('active');
             } else {
-                toolContent.style.display = 'none';
-                dbContent.style.display = 'block';
-                toolBtn.classList.remove('active');
-                dbBtn.classList.add('active');
+                pageTool.classList.remove('active');
+                pageDb.classList.add('active');
+                btnTool.classList.remove('active');
+                btnDb.classList.add('active');
             }
             window.scrollTo(0, 0);
         }
 
         // 判定ロジック
         function runCheck() {
+            const state = document.getElementById('state').value;
             const thru = parseInt(document.getElementById('thru').value);
             const games = parseInt(document.getElementById('games').value) || 0;
+            const kari = document.getElementById('kari_loop').checked;
             const dhcFail = document.getElementById('dhc_fail').checked;
+            const flash2 = document.getElementById('flash2').checked;
             const res = document.getElementById('result');
             res.style.display = 'block';
 
             if (thru <= 3 && games > 400) {
-                res.className = "danger"; res.innerHTML = "【NG】400G超えは深追い厳禁！"; return;
+                res.className = "danger"; res.innerHTML = "【NG】400G超えは深追い厳禁！<br>期待値が大幅に下がります"; return;
             }
             if (dhcFail) {
                 res.className = "sss"; res.innerHTML = "【SSS】DHC失敗ループ狙い！<br>打っちゃえニッサン‼️"; return;
             }
+            if (flash2) {
+                res.className = "safe"; res.innerHTML = "【モードB以上濃厚】全ツッパ！<br>打っちゃえニッサン‼️"; return;
+            }
 
-            // ボーダー計算（簡易版）
-            const state = document.getElementById('state').value;
-            const kari = document.getElementById('kari_loop').checked;
             let border = 999;
             if (state === "reset") {
                 border = (thru === 0) ? 230 : 150;
             } else {
                 if (thru === 0) border = kari ? 150 : 280;
                 else if (thru === 1) border = 200;
-                else border = 150;
+                else if (thru === 2) border = 150;
+                else if (thru === 3) border = 200;
+                else border = 0;
             }
 
             if (games >= border) {
@@ -246,7 +253,6 @@
             }
         }
 
-        // 履歴保存
         function saveData() {
             const state = document.getElementById('state').selectedOptions[0].text.substring(0,2);
             const thru = document.getElementById('thru').value;
@@ -256,7 +262,7 @@
             const body = document.getElementById('historyBody');
             const row = body.insertRow(0);
             row.innerHTML = `<td>${state}</td><td>${thru}</td><td>${startG}</td><td>${winG}</td><td>${memo}</td>`;
-            alert("保存しました！");
+            alert("履歴に保存しました！");
         }
     </script>
 </body>
