@@ -3,57 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>沖ドキ!DUO 極・攻略Navi V9</title>
+    <title>沖ドキ!DUO 極・攻略Navi 決定版</title>
     <style>
         body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
         
         /* タブ切り替え */
-        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; height: 50px; }
-        .tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-weight: bold; font-size: 0.95rem; }
+        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; height: 55px; }
+        .tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-weight: bold; font-size: 1rem; }
         .tab.active { background: #ff4444; color: #fff; border-radius: 7px; }
         
         .content { display: none; width: 100%; }
         .content.active { display: block; }
 
         .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; box-sizing: border-box; }
-        h1 { font-size: 1.1rem; color: #ffcc00; text-align: center; margin: 10px 0; }
         h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
 
         /* 入力フォーム */
         label { display: block; margin-top: 12px; font-size: 0.85rem; color: #bbb; font-weight: bold; }
-        select, input[type="number"], input[type="text"] { width: 100%; padding: 15px; margin-top: 5px; border-radius: 8px; border: none; font-size: 1rem; box-sizing: border-box; background: #eee; color: #000; -webkit-appearance: none; }
+        select, input[type="number"], input[type="text"] { width: 100%; padding: 15px; margin-top: 5px; border-radius: 8px; border: none; font-size: 1.1rem; box-sizing: border-box; background: #eee; color: #000; -webkit-appearance: none; }
         
         /* チェックボックス行 */
         .check-row { display: flex; align-items: center; margin-top: 15px; font-size: 0.9rem; line-height: 1.2; }
-        .check-row input[type="checkbox"] { width: 24px; height: 24px; margin-right: 12px; cursor: pointer; flex-shrink: 0; }
+        .check-row input[type="checkbox"] { width: 26px; height: 26px; margin-right: 12px; cursor: pointer; flex-shrink: 0; }
 
-        /* 判定ボタン（大型化） */
-        .btn-judge { background: #ff4444; color: white; padding: 22px; border: none; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 0 #b33030; }
+        /* 判定ボタン（超大型） */
+        .btn-judge { background: #ff4444; color: white; padding: 25px; border: none; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.3rem; box-shadow: 0 5px 0 #b33030; }
         .btn-judge:active { transform: translateY(2px); box-shadow: none; }
         
         .btn-save { background: #2196f3; color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; font-weight: bold; margin-top: 10px; }
 
-        #result { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; line-height: 1.5; font-size: 1.1rem; }
+        #result { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; line-height: 1.5; font-size: 1.2rem; }
         .safe { background: #2e7d32; border: 2px solid #a5d6a7; }
         .danger { background: #c62828; border: 2px solid #ef9a9a; }
         .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; border: 2px solid #fff; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        /* 解析DB（アコーディオン） */
+        /* 解析DBアコーディオン */
         details { background: #2a2a2a; border-radius: 6px; margin-bottom: 10px; border: 1px solid #444; }
-        summary { padding: 15px; font-size: 0.95rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary { padding: 15px; font-size: 1rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::after { content: '＋'; }
         details[open] summary::after { content: 'ー'; }
         .details-inner { padding: 10px; border-top: 1px solid #444; background: #333; }
 
-        .info-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; margin-top: 5px; }
+        /* 解析テーブル */
+        .info-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; }
         .info-table th, .info-table td { border: 1px solid #555; padding: 10px; text-align: left; }
-        .info-table th { background: #222; color: #ffcc00; width: 40%; }
-        .highlight { color: #ff4444; font-weight: bold; }
+        .info-table th { background: #222; color: #ffcc00; width: 45%; }
         .blue-text { color: #00ffff; font-weight: bold; }
+        .highlight { color: #ff4444; font-weight: bold; }
 
-        /* フラッシュ図解スタイル */
-        .flash-icon { background: #111; padding: 5px; border-radius: 4px; color: #ffeb3b; font-size: 0.9rem; letter-spacing: 2px; text-align: center; margin-bottom: 5px; }
+        /* 特殊フラッシュ図解 */
+        .flash-box { background: #000; color: #ffeb3b; padding: 5px; border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 4px; border: 1px solid #444; letter-spacing: 3px; }
 
         .history-wrap { overflow-x: auto; margin-top: 10px; }
         table.history-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 350px; }
@@ -61,7 +61,7 @@
 </head>
 <body>
 
-    <h1>🌺 沖ドキ!DUO 完全攻略Navi</h1>
+    <h1 style="text-align:center; font-size:1.1rem; color:#ffcc00; margin:10px 0;">🌺 沖ドキ!DUO 完全攻略Navi</h1>
 
     <div class="tabs">
         <div id="btn-tool" class="tab active" onclick="showTab('tool')">判定ツール</div>
@@ -71,7 +71,6 @@
     <div id="content-tool" class="content active">
         <div class="card">
             <h3>期待値判定</h3>
-            
             <label>状況を選択</label>
             <select id="state">
                 <option value="heaven">天国抜け後</option>
@@ -122,47 +121,30 @@
 
     <div id="content-analysis" class="content">
         <details open>
-            <summary>🌸 ドキハナモード示唆演出 (特殊フラッシュ)</summary>
+            <summary>🌸 特殊フラッシュ解析 (添付データ)</summary>
             <div class="details-inner">
                 <table class="info-table">
-                    <tr style="background:#111; color:#ffcc00;"><th>特殊フラッシュ</th><th>ドキハナモード示唆</th></tr>
+                    <tr style="background:#111; color:#ffcc00;"><th>フラッシュ種類</th><th>示唆内容</th></tr>
                     <tr>
-                        <td>
-                            <div class="flash-icon">← ← ←</div>
-                            リプレイ特殊①
-                        </td>
-                        <td>モードB期待度UP</td>
+                        <td><div class="flash-box">← ← ←</div>リプレイ特殊①</td>
+                        <td>ドキハナモード<br><b>B期待度UP</b></td>
                     </tr>
                     <tr>
-                        <td>
-                            <div class="flash-icon">↓ ↓ ↓</div>
-                            リプレイ特殊②
-                        </td>
-                        <td>モードD期待度UP＋<br>モードB期待度UP(強)</td>
+                        <td><div class="flash-box">↓ ↓ ↓</div>リプレイ特殊②</td>
+                        <td>ドキハナモード<br><b>D期待度UP＋B(強)</b></td>
                     </tr>
                     <tr>
-                        <td>
-                            <div class="flash-icon">↑ ↑ ↑</div>
-                            ベル特殊①
-                        </td>
-                        <td><span class="blue-text">モードB以上濃厚</span></td>
+                        <td><div class="flash-box">↑ ↑ ↑</div>ベル特殊① ※</td>
+                        <td><span class="blue-text">B以上濃厚</span></td>
                     </tr>
                     <tr>
-                        <td>
-                            <div class="flash-icon">→ → →<br>↓ ↓ ↓</div>
-                            ベル特殊②
-                        </td>
-                        <td><span class="highlight">モードD以上濃厚</span></td>
+                        <td><div class="flash-box">→ ↓ ←</div>ベル特殊②</td>
+                        <td><span class="highlight">D以上濃厚</span></td>
                     </tr>
                 </table>
-                
-                <div style="margin-top:10px; font-size:0.7rem; color:#aaa; line-height:1.4;">
-                    ※画像が表示されない場合、上掲の矢印（フラッシュの流れる方向）を参考にしてください。<br>
-                    リプレイ：黄矢印 / ベル：黄矢印(逆向き含む)
-                </div>
-                
                 <div style="margin-top:10px; text-align:center;">
-                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" style="max-width:100%; border-radius:5px; border:1px solid #555;" alt="特殊フラッシュ画像">
+                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" style="max-width:100%; border-radius:5px; border:1px solid #555;" alt="特殊フラッシュ">
+                    <p style="font-size:0.6rem; color:#777;">画像引用：ちょんぼりすた様</p>
                 </div>
             </div>
         </details>
@@ -195,13 +177,13 @@
         </details>
 
         <details>
-            <summary>🌅 終了画面示唆</summary>
+            <summary>🌅 終了画面示唆 (4種)</summary>
             <div class="details-inner">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div style="background: linear-gradient(to bottom, #87CEEB, #F0E68C); padding: 10px; border-radius: 5px; color: #000; text-align: center; font-size: 0.7rem;"><b>昼</b><br>基本</div>
-                    <div style="background: linear-gradient(to bottom, #FF8C00, #B22222); padding: 10px; border-radius: 5px; text-align: center; font-size: 0.7rem;"><b>夕方</b><br>通常B期待</div>
-                    <div style="background: linear-gradient(to bottom, #191970, #4B0082); padding: 10px; border-radius: 5px; text-align: center; font-size: 0.7rem;"><b>夜</b><br>通常B濃厚</div>
-                    <div style="background: linear-gradient(to bottom, #FFB6C1, #FF69B4); padding: 10px; border-radius: 5px; color: #000; text-align: center; font-size: 0.7rem;"><b>花</b><br>天国濃厚</div>
+                    <div style="background: linear-gradient(to bottom, #87CEEB, #F0E68C); padding: 12px; border-radius: 5px; color: #000; text-align: center; font-size: 0.75rem;"><b>昼</b><br>基本</div>
+                    <div style="background: linear-gradient(to bottom, #FF8C00, #B22222); padding: 12px; border-radius: 5px; text-align: center; font-size: 0.75rem;"><b>夕方</b><br>B期待</div>
+                    <div style="background: linear-gradient(to bottom, #191970, #4B0082); padding: 12px; border-radius: 5px; text-align: center; font-size: 0.75rem;"><b>夜</b><br>B濃厚</div>
+                    <div style="background: linear-gradient(to bottom, #FFB6C1, #FF69B4); padding: 12px; border-radius: 5px; color: #000; text-align: center; font-size: 0.75rem;"><b>花</b><br>天国濃厚</div>
                 </div>
             </div>
         </details>
@@ -209,8 +191,11 @@
 
     <script>
         function showTab(tabName) {
-            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('content-tool').classList.remove('active');
+            document.getElementById('content-analysis').classList.remove('active');
+            document.getElementById('btn-tool').classList.remove('active');
+            document.getElementById('btn-analysis').classList.remove('active');
+            
             document.getElementById('content-' + tabName).classList.add('active');
             document.getElementById('btn-' + tabName).classList.add('active');
             window.scrollTo(0, 0);
@@ -219,7 +204,7 @@
         function runCheck() {
             const state = document.getElementById('state').value;
             const thru = parseInt(document.getElementById('thru').value);
-            const games = parseInt(document.getElementById('games').value) || 0;
+            const games = document.getElementById('games').value || 0;
             const kariLoop = document.getElementById('kari_loop').checked;
             const dhcFail = document.getElementById('dhc_fail').checked;
             const flash2 = document.getElementById('flash2').checked;
@@ -233,7 +218,7 @@
                 res.className = "sss"; res.innerHTML = "【SSS】DHC失敗ループ狙い！<br>打っちゃえニッサン‼️"; return;
             }
             if (flash2) {
-                res.className = "safe"; res.innerHTML = "【モードB以上濃厚】ツッパ推奨！<br>打っちゃえニッサン‼️"; return;
+                res.className = "safe"; res.innerHTML = "【モードB以上濃厚】全ツッパ！<br>打っちゃえニッサン‼️"; return;
             }
 
             let border = 999;
@@ -245,4 +230,30 @@
                 if (thru === 0) border = kariLoop ? 150 : 280;
                 else if (thru === 1) border = kariLoop ? 150 : 200;
                 else if (thru === 2) border = kariLoop ? 120 : 150;
-                else if (thru ===
+                else if (thru === 3) border = kariLoop ? 150 : 200;
+                else if (thru === 4) border = 0;
+            }
+
+            if (games >= border) {
+                res.className = "safe"; res.innerHTML = `【GO】${border}Gクリア！<br>打っちゃえニッサン‼️`;
+            } else {
+                res.className = "danger"; res.innerHTML = `【待機】あと ${border - games}G`;
+            }
+        }
+
+        function saveData() {
+            const state = document.getElementById('state').selectedOptions[0].text.substring(0,2);
+            const thru = document.getElementById('thru').value;
+            const startG = document.getElementById('games').value || "-";
+            const winG = document.getElementById('win_games').value || "-";
+            const memo = document.getElementById('memo').value || "-";
+            const body = document.getElementById('historyBody');
+            const row = body.insertRow(0);
+            row.innerHTML = `<td>${state}</td><td>${thru}</td><td>${startG}</td><td>${winG}</td><td>${memo}</td>`;
+            document.getElementById('win_games').value = "";
+            document.getElementById('memo').value = "";
+            alert("履歴に保存しました！");
+        }
+    </script>
+</body>
+</html>
