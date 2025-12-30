@@ -3,41 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖ドキ!DUO 完全攻略ツール V3.2</title>
+    <title>沖ドキ!DUO 極・攻略ツール</title>
     <style>
-        /* ベーススタイル */
         body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
-        
-        /* タブ切り替え */
         .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; }
         .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #888; font-weight: bold; }
         .tab.active { background: #ff4444; color: #fff; border-radius: 7px; }
-        
-        /* コンテンツ表示制御 */
         .content { display: none; }
         .content.active { display: block; }
 
-        /* カードデザイン */
         .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; }
         h1 { font-size: 1.1rem; color: #ffcc00; text-align: center; margin: 10px 0; }
-        h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; }
+        h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
 
-        /* 判定ツール用スタイル */
+        /* ツール用スタイル */
         label { display: block; margin-top: 10px; font-size: 0.8rem; color: #bbb; }
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: none; font-size: 1rem; box-sizing: border-box; }
         input[type="number"], input[type="text"] { background: #eee; color: #000; }
         .btn { background: #ff4444; color: white; padding: 14px; border: none; border-radius: 6px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; }
-        .btn-save { background: #2196f3; margin-top: 10px; }
         #result { margin-top: 15px; padding: 15px; border-radius: 6px; text-align: center; font-weight: bold; }
         .safe { background: #2e7d32; }
         .danger { background: #c62828; }
         .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        /* 解析DB（アコーディオン） */
+        /* アコーディオン */
         details { background: #2a2a2a; border-radius: 6px; margin-bottom: 10px; border: 1px solid #444; }
         summary { padding: 15px; font-size: 0.95rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
-        summary::-webkit-details-marker { display: none; }
         summary::after { content: '＋'; }
         details[open] summary::after { content: 'ー'; }
         .details-inner { padding: 10px; border-top: 1px solid #444; background: #333; }
@@ -45,15 +37,21 @@
         /* 解析テーブル */
         .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; }
         .info-table th, .info-table td { border: 1px solid #555; padding: 8px; text-align: left; }
-        .info-table th { background: #222; color: #ffcc00; width: 40%; }
+        .info-table th { background: #222; color: #ffcc00; }
         .highlight { color: #ff4444; font-weight: bold; }
         .blue-text { color: #00ffff; font-weight: bold; }
 
-        /* 履歴テーブル */
+        /* 終了画面ビジュアル表示 */
+        .screen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .screen-item { border-radius: 6px; padding: 10px; text-align: center; font-size: 0.75rem; border: 1px solid #555; }
+        .sc-day { background: linear-gradient(to bottom, #87CEEB, #F0E68C); color: #000; } /* 昼 */
+        .sc-eve { background: linear-gradient(to bottom, #FF8C00, #B22222); } /* 夕方 */
+        .sc-night { background: linear-gradient(to bottom, #191970, #4B0082); } /* 夜 */
+        .sc-flower { background: linear-gradient(to bottom, #FFB6C1, #FF69B4); color: #000; } /* 花 */
+
         .history-wrap { overflow-x: auto; margin-top: 10px; }
         table.history-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 350px; }
         .history-table th, .history-table td { border: 1px solid #555; padding: 6px; text-align: center; }
-        .history-table th { background: #444; color: #ffcc00; }
     </style>
 </head>
 <body>
@@ -95,7 +93,7 @@
                 <input type="number" id="win_games" placeholder="当選G">
                 <input type="text" id="memo" placeholder="メモ">
             </div>
-            <button class="btn btn-save" onclick="saveData()">履歴に保存</button>
+            <button class="btn" style="background: #2196f3; margin-top:10px;" onclick="saveData()">履歴に保存</button>
             <div class="history-wrap">
                 <table class="history-table">
                     <thead><tr><th>状況</th><th>ス</th><th>開始</th><th>当選</th><th>メモ</th></tr></thead>
@@ -108,7 +106,7 @@
     <div id="content-analysis" class="content">
         
         <details>
-            <summary>🌻 特殊点滅（全18種）</summary>
+            <summary>🌻 特殊点滅 全18種（恩恵別）</summary>
             <div class="details-inner">
                 <table class="info-table">
                     <tr><th colspan="2" class="blue-text" style="text-align:center;">通常B以上濃厚</th></tr>
@@ -122,62 +120,62 @@
                     <tr><th colspan="2" class="highlight" style="text-align:center;">ドキドキ以上確定</th></tr>
                     <tr><td>点灯のみ</td><td>左右2回ずつ点滅</td></tr>
                     <tr><td>交互点滅</td><td>しだれ柳</td></tr>
+                    <tr><th colspan="2" style="color:white; text-align:center;">超ドキドキ確定</th></tr>
+                    <tr><td>レインボー</td><td>カラフル点滅</td></tr>
                 </table>
             </div>
         </details>
 
         <details>
-            <summary>🌸 ドキハナモード A〜E & 示唆</summary>
+            <summary>🌸 ドキハナモード A〜G 解析</summary>
             <div class="details-inner">
-                <table class="info-table">
-                    <tr><th>モード</th><th>発生率</th><th>恩恵</th></tr>
-                    <tr><td>A</td><td>0%</td><td>なし</td></tr>
-                    <tr><td>B</td><td>0.4%</td><td>天国</td></tr>
-                    <tr><td>C</td><td>5.1%</td><td>天国</td></tr>
-                    <tr><td>D</td><td>100%</td><td>天国</td></tr>
-                    <tr><td>E</td><td>100%</td><td><span class="highlight">ドキドキ</span></td></tr>
+                <table class="info-table" style="font-size: 0.75rem;">
+                    <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生率</th><th>成功時恩恵</th></tr>
+                    <tr><td>モードA</td><td>なし</td><td>-</td></tr>
+                    <tr><td>モードB</td><td>激低</td><td>天国以上</td></tr>
+                    <tr><td>モードC</td><td>低</td><td>天国以上</td></tr>
+                    <tr><td>モードD</td><td>中</td><td>天国以上</td></tr>
+                    <tr><td>モードE</td><td>高</td><td>天国以上</td></tr>
+                    <tr><td>モードF</td><td><span class="highlight">100%</span></td><td>天国以上</td></tr>
+                    <tr><td>モードG</td><td><span class="highlight">100%</span></td><td><span class="highlight">ドキドキ以上</span></td></tr>
                 </table>
                 <p style="font-size: 0.8rem; margin-top:10px;">
-                    <span class="highlight">【演出示唆】</span><br>
-                    ● ドキハナロゴの鼓動が激しい＝高モード期待<br>
-                    ● 33G目の告知発生＝モードC以上確定<br>
-                    ● 失敗時＝50%で同モードをループ（狙い目！）
+                    <span class="highlight">【モード示唆演出】</span><br>
+                    ● 告知発生時点でモードB以上確定。失敗しても<span class="blue-text">50%でモード継続</span>。
                 </p>
             </div>
         </details>
 
         <details>
-            <summary>🌅 終了画面・天井</summary>
+            <summary>🌅 終了画面の示唆（4種）</summary>
             <div class="details-inner">
-                <table class="info-table">
-                    <tr><th>夕方画面</th><td>通常B期待度UP</td></tr>
-                    <tr><th>夜画面</th><td>通常B以上濃厚！</td></tr>
-                    <tr><th>通常A/B天井</th><td>800G</td></tr>
-                    <tr><th>チャンス天井</th><td>200G</td></tr>
-                </table>
+                <div class="screen-grid">
+                    <div class="screen-item sc-day"><b>【昼】</b><br>基本画面</div>
+                    <div class="screen-item sc-eve"><b>【夕方】</b><br>通常Bに期待</div>
+                    <div class="screen-item sc-night"><b>【夜】</b><br>通常B以上濃厚</div>
+                    <div class="screen-item sc-flower"><b>【花吹雪】</b><br>天国以上濃厚</div>
+                </div>
+                <p style="font-size: 0.8rem; margin-top:12px; border-top: 1px solid #555; padding-top:10px;">
+                    ※「あたいがふー」ボイス＋花吹雪は天国＋BIG濃厚！
+                </p>
             </div>
         </details>
 
         <p style="font-size: 0.7rem; text-align: center; color: #555; margin-top: 20px;">
-            引用元：ちょんぼりすた様
+            引用元：ちょんぼりすた様 / 編集：天才仕事人
         </p>
     </div>
 
     <script>
-        // タブ切り替え（確実な方式）
         function showTab(tabName) {
-            // コンテンツの切り替え
             document.getElementById('content-tool').classList.remove('active');
             document.getElementById('content-analysis').classList.remove('active');
             document.getElementById('content-' + tabName).classList.add('active');
-            
-            // ボタンの見た目切り替え
             document.getElementById('btn-tool').classList.remove('active');
             document.getElementById('btn-analysis').classList.remove('active');
             document.getElementById('btn-' + tabName).classList.add('active');
         }
 
-        // 判定ロジック
         function runCheck() {
             const state = document.getElementById('state').value;
             const thru = parseInt(document.getElementById('thru').value);
@@ -218,7 +216,6 @@
             }
         }
 
-        // 履歴保存
         function saveData() {
             const state = document.getElementById('state').selectedOptions[0].text.substring(0,2);
             const thru = document.getElementById('thru').value;
