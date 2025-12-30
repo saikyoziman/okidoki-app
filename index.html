@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖ドキ!DUO 極・攻略ツール</title>
+    <title>沖ドキ!DUO 極・攻略Navi V5</title>
     <style>
         body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
         .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; }
@@ -16,7 +16,6 @@
         h1 { font-size: 1.1rem; color: #ffcc00; text-align: center; margin: 10px 0; }
         h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
 
-        /* ツール用スタイル */
         label { display: block; margin-top: 10px; font-size: 0.8rem; color: #bbb; }
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: none; font-size: 1rem; box-sizing: border-box; }
         input[type="number"], input[type="text"] { background: #eee; color: #000; }
@@ -34,20 +33,22 @@
         details[open] summary::after { content: 'ー'; }
         .details-inner { padding: 10px; border-top: 1px solid #444; background: #333; }
 
-        /* 解析テーブル */
-        .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; }
+        .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; margin-top: 5px; }
         .info-table th, .info-table td { border: 1px solid #555; padding: 8px; text-align: left; }
         .info-table th { background: #222; color: #ffcc00; }
         .highlight { color: #ff4444; font-weight: bold; }
         .blue-text { color: #00ffff; font-weight: bold; }
 
-        /* 終了画面ビジュアル表示 */
+        .img-box { text-align: center; margin: 10px 0; background: #000; padding: 5px; border-radius: 5px; }
+        .img-box img { max-width: 100%; border-radius: 3px; border: 1px solid #555; }
+        .img-label { font-size: 0.7rem; color: #aaa; margin-top: 3px; }
+
         .screen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .screen-item { border-radius: 6px; padding: 10px; text-align: center; font-size: 0.75rem; border: 1px solid #555; }
-        .sc-day { background: linear-gradient(to bottom, #87CEEB, #F0E68C); color: #000; } /* 昼 */
-        .sc-eve { background: linear-gradient(to bottom, #FF8C00, #B22222); } /* 夕方 */
-        .sc-night { background: linear-gradient(to bottom, #191970, #4B0082); } /* 夜 */
-        .sc-flower { background: linear-gradient(to bottom, #FFB6C1, #FF69B4); color: #000; } /* 花 */
+        .sc-day { background: linear-gradient(to bottom, #87CEEB, #F0E68C); color: #000; }
+        .sc-eve { background: linear-gradient(to bottom, #FF8C00, #B22222); }
+        .sc-night { background: linear-gradient(to bottom, #191970, #4B0082); }
+        .sc-flower { background: linear-gradient(to bottom, #FFB6C1, #FF69B4); color: #000; }
 
         .history-wrap { overflow-x: auto; margin-top: 10px; }
         table.history-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 350px; }
@@ -65,7 +66,7 @@
 
     <div id="content-tool" class="content active">
         <div class="card">
-            <h3>狙い目判定</h3>
+            <h3>期待値判定</h3>
             <label>状況 / スルー回数</label>
             <div style="display:flex; gap:10px;">
                 <select id="state" style="flex:2;">
@@ -81,14 +82,14 @@
             <div style="margin-top:15px; font-size: 0.85rem; line-height: 2;">
                 <input type="checkbox" id="kari_loop"> 仮天ループ中 / 
                 <input type="checkbox" id="dhc_fail"> DHC失敗後 / 
-                <input type="checkbox" id="flash2"> ベルフラ②
+                <input type="checkbox" id="flash2"> ベルフラ②発生
             </div>
-            <button class="btn" onclick="runCheck()">期待値を判定する</button>
+            <button class="btn" onclick="runCheck()">判定：打っちゃえニッサン‼️</button>
             <div id="result" style="display:none;"></div>
         </div>
 
         <div class="card">
-            <h3>実戦データ入力</h3>
+            <h3>実戦データ</h3>
             <div style="display:flex; gap:10px;">
                 <input type="number" id="win_games" placeholder="当選G">
                 <input type="text" id="memo" placeholder="メモ">
@@ -106,43 +107,56 @@
     <div id="content-analysis" class="content">
         
         <details>
-            <summary>🌻 特殊点滅 全18種（恩恵別）</summary>
+            <summary>🌸 ドキハナモード A〜G & 示唆演出</summary>
             <div class="details-inner">
-                <table class="info-table">
-                    <tr><th colspan="2" class="blue-text" style="text-align:center;">通常B以上濃厚</th></tr>
-                    <tr><td>スロー点滅</td><td>高速点滅</td></tr>
-                    <tr><td>同時点滅</td><td>通常→同時点滅</td></tr>
-                    <tr><th colspan="2" class="blue-text" style="text-align:center;">天国以上濃厚</th></tr>
-                    <tr><td>片方のみ点滅</td><td>瞬き点滅</td></tr>
-                    <tr><td>3回点滅</td><td>だんだん高速</td></tr>
-                    <tr><td>右から点滅</td><td>リール回転点滅</td></tr>
-                    <tr><td>葉っぱのみ</td><td>花のみ点滅</td></tr>
-                    <tr><th colspan="2" class="highlight" style="text-align:center;">ドキドキ以上確定</th></tr>
-                    <tr><td>点灯のみ</td><td>左右2回ずつ点滅</td></tr>
-                    <tr><td>交互点滅</td><td>しだれ柳</td></tr>
-                    <tr><th colspan="2" style="color:white; text-align:center;">超ドキドキ確定</th></tr>
-                    <tr><td>レインボー</td><td>カラフル点滅</td></tr>
+                <table class="info-table" style="font-size: 0.7rem;">
+                    <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生率</th><th>恩恵</th></tr>
+                    <tr><td>A〜B</td><td>なし〜激低</td><td>天国</td></tr>
+                    <tr><td>C〜D</td><td>低〜中</td><td>天国</td></tr>
+                    <tr><td>E</td><td>高</td><td>天国</td></tr>
+                    <tr><td>F</td><td><span class="highlight">100%</span></td><td>天国以上</td></tr>
+                    <tr><td>G</td><td><span class="highlight">100%</span></td><td><span class="highlight">ドキドキ以上</span></td></tr>
                 </table>
+
+                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px;">【視覚示唆1】ベル特殊フラッシュ</h4>
+                <div class="img-box">
+                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-bell.jpg" alt="ベルフラッシュ">
+                    <div class="img-label">引用：ちょんぼりすた様</div>
+                </div>
+                <table class="info-table">
+                    <tr><th>パターン1</th><td>通常フラッシュ。期待度低。</td></tr>
+                    <tr><th>パターン2</th><td><span class="blue-text">モードC以上</span>の大チャンス！</td></tr>
+                </table>
+
+                <h4 style="color:#ffcc00; font-size:0.85rem; margin:15px 0 5px;">【視覚示唆2】ドキハナロゴの鼓動</h4>
+                <div class="img-box">
+                    <img src="https://chonborista.com/wp-content/uploads/2021/11/okidoki-duo-dokihana.jpg" alt="ドキハナロゴ">
+                    <div class="img-label">引用：ちょんぼりすた様</div>
+                </div>
+                <ul style="font-size: 0.8rem; padding-left: 20px;">
+                    <li><span class="highlight">弱：</span>基本。</li>
+                    <li><span class="highlight">中：</span>期待度アップ！</li>
+                    <li><span class="highlight">強：</span><span class="blue-text">モードC以上</span>の期待大！</li>
+                </ul>
             </div>
         </details>
 
         <details>
-            <summary>🌸 ドキハナモード A〜G 解析</summary>
+            <summary>🌻 特殊点滅 全18種（恩恵別）</summary>
             <div class="details-inner">
-                <table class="info-table" style="font-size: 0.75rem;">
-                    <tr style="background:#111; color:#ffcc00;"><th>モード</th><th>33G発生率</th><th>成功時恩恵</th></tr>
-                    <tr><td>モードA</td><td>なし</td><td>-</td></tr>
-                    <tr><td>モードB</td><td>激低</td><td>天国以上</td></tr>
-                    <tr><td>モードC</td><td>低</td><td>天国以上</td></tr>
-                    <tr><td>モードD</td><td>中</td><td>天国以上</td></tr>
-                    <tr><td>モードE</td><td>高</td><td>天国以上</td></tr>
-                    <tr><td>モードF</td><td><span class="highlight">100%</span></td><td>天国以上</td></tr>
-                    <tr><td>モードG</td><td><span class="highlight">100%</span></td><td><span class="highlight">ドキドキ以上</span></td></tr>
+                <table class="info-table">
+                    <tr style="background:#111;"><th colspan="2" class="blue-text" style="text-align:center;">通常B以上濃厚</th></tr>
+                    <tr><td>スロー点滅</td><td>高速点滅</td></tr>
+                    <tr><td>同時点滅</td><td>通常→同時点滅</td></tr>
+                    <tr style="background:#111;"><th colspan="2" class="blue-text" style="text-align:center;">天国以上濃厚</th></tr>
+                    <tr><td>片方のみ点滅</td><td>瞬き点滅</td></tr>
+                    <tr><td>3回点滅</td><td>だんだん高速</td></tr>
+                    <tr><td>右から点滅</td><td>リール回転点滅</td></tr>
+                    <tr><td>葉っぱのみ</td><td>花のみ点滅</td></tr>
+                    <tr style="background:#111;"><th colspan="2" class="highlight" style="text-align:center;">ドキドキ以上確定</th></tr>
+                    <tr><td>点灯のみ</td><td>左右2回ずつ点滅</td></tr>
+                    <tr><td>交互点滅</td><td>しだれ柳</td></tr>
                 </table>
-                <p style="font-size: 0.8rem; margin-top:10px;">
-                    <span class="highlight">【モード示唆演出】</span><br>
-                    ● 告知発生時点でモードB以上確定。失敗しても<span class="blue-text">50%でモード継続</span>。
-                </p>
             </div>
         </details>
 
@@ -150,18 +164,15 @@
             <summary>🌅 終了画面の示唆（4種）</summary>
             <div class="details-inner">
                 <div class="screen-grid">
-                    <div class="screen-item sc-day"><b>【昼】</b><br>基本画面</div>
-                    <div class="screen-item sc-eve"><b>【夕方】</b><br>通常Bに期待</div>
-                    <div class="screen-item sc-night"><b>【夜】</b><br>通常B以上濃厚</div>
-                    <div class="screen-item sc-flower"><b>【花吹雪】</b><br>天国以上濃厚</div>
+                    <div class="screen-item sc-day"><b>【昼】</b><br>基本</div>
+                    <div class="screen-item sc-eve"><b>【夕方】</b><br>通常B期待</div>
+                    <div class="screen-item sc-night"><b>【夜】</b><br>通常B濃厚</div>
+                    <div class="screen-item sc-flower"><b>【花吹雪】</b><br>天国濃厚</div>
                 </div>
-                <p style="font-size: 0.8rem; margin-top:12px; border-top: 1px solid #555; padding-top:10px;">
-                    ※「あたいがふー」ボイス＋花吹雪は天国＋BIG濃厚！
-                </p>
             </div>
         </details>
 
-        <p style="font-size: 0.7rem; text-align: center; color: #555; margin-top: 20px;">
+        <p style="font-size: 0.65rem; text-align: center; color: #555; margin-top: 20px;">
             引用元：ちょんぼりすた様 / 編集：天才仕事人
         </p>
     </div>
@@ -193,7 +204,7 @@
                 res.className = "sss"; res.innerHTML = "【SSS】DHC失敗ループ狙い！<br>打っちゃえニッサン‼️"; return;
             }
             if (flash2) {
-                res.className = "safe"; res.innerHTML = "【B濃厚】ツッパ推奨！<br>打っちゃえニッサン‼️"; return;
+                res.className = "safe"; res.innerHTML = "【B濃厚】全ツッパ！<br>打っちゃえニッサン‼️"; return;
             }
 
             let border = 999;
