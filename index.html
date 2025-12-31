@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>沖ドキ!DUO 攻略Navi V15.0</title>
+    <title>沖ドキ!DUO 攻略Navi V16.0</title>
     <style>
         body { font-family: -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 10px; padding-bottom: 50px; margin: 0; }
         
-        /* タブメニュー */
-        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; height: 55px; }
-        .tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-weight: bold; font-size: 1rem; }
+        /* 確実に反応するタブメニュー */
+        .tabs { display: flex; margin-bottom: 15px; background: #222; border-radius: 8px; border: 1px solid #444; height: 60px; }
+        .tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-weight: bold; font-size: 1.1rem; -webkit-tap-highlight-color: transparent; }
         .tab.active { background: #ff4444 !important; color: #fff !important; border-radius: 7px; }
         
-        /* コンテンツエリア */
-        .page { display: none; width: 100%; }
+        /* ページエリアの分離 */
+        .page { display: none; width: 100%; visibility: hidden; }
+        .page.active { display: block !important; visibility: visible !important; }
 
-        .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; box-sizing: border-box; }
-        h3 { margin-top: 0; color: #ffcc00; font-size: 0.9rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 10px; }
+        .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; }
+        h3 { margin-top: 0; color: #ffcc00; font-size: 0.95rem; border-bottom: 1px solid #555; padding-bottom: 5px; margin-bottom: 12px; }
 
-        label { display: block; margin-top: 12px; font-size: 0.85rem; color: #bbb; font-weight: bold; }
+        label { display: block; margin-top: 12px; font-size: 0.9rem; color: #bbb; font-weight: bold; }
         select, input[type="number"], input[type="text"] { width: 100%; padding: 15px; margin-top: 5px; border-radius: 8px; border: none; font-size: 1.1rem; box-sizing: border-box; background: #eee; color: #000; -webkit-appearance: none; }
         
-        .check-row { display: flex; align-items: center; margin-top: 15px; font-size: 0.9rem; line-height: 1.2; }
-        .check-row input[type="checkbox"] { width: 26px; height: 26px; margin-right: 12px; cursor: pointer; flex-shrink: 0; }
+        .check-row { display: flex; align-items: center; margin-top: 15px; font-size: 0.95rem; }
+        .check-row input[type="checkbox"] { width: 28px; height: 28px; margin-right: 12px; cursor: pointer; flex-shrink: 0; }
 
-        .btn-judge { background: #ff4444; color: white; padding: 25px; border: none; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.3rem; box-shadow: 0 5px 0 #b33030; }
-        .btn-judge:active { transform: translateY(2px); box-shadow: none; }
+        /* 超大型ボタン */
+        .btn-judge { background: #ff4444; color: white; padding: 25px; border: none; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 25px; cursor: pointer; font-size: 1.4rem; box-shadow: 0 6px 0 #b33030; }
+        .btn-judge:active { transform: translateY(3px); box-shadow: none; }
 
-        #result { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; line-height: 1.5; font-size: 1.2rem; display: none; }
+        #result { margin-top: 20px; padding: 20px; border-radius: 10px; text-align: center; font-weight: bold; line-height: 1.6; font-size: 1.3rem; display: none; }
         .safe { background: #2e7d32; border: 2px solid #a5d6a7; }
         .danger { background: #c62828; border: 2px solid #ef9a9a; }
         .sss { background: #fbc02d; color: #000; animation: blink 1s infinite; border: 2px solid #fff; }
@@ -35,17 +37,15 @@
 
         /* 解析DBアコーディオン */
         details { background: #2a2a2a; border-radius: 6px; margin-bottom: 10px; border: 1px solid #444; width: 100%; }
-        summary { padding: 18px; font-size: 1rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary { padding: 18px; font-size: 1.1rem; font-weight: bold; color: #ffcc00; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::after { content: '＋'; }
         details[open] summary::after { content: 'ー'; }
         .details-inner { padding: 12px; border-top: 1px solid #444; background: #333; }
 
-        .info-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; }
-        .info-table th, .info-table td { border: 1px solid #555; padding: 10px; text-align: left; line-height: 1.5; }
+        .info-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; }
+        .info-table th, .info-table td { border: 1px solid #555; padding: 12px; text-align: left; }
         .info-table th { background: #222; color: #ffcc00; width: 45%; }
-        .highlight { color: #ff4444; font-weight: bold; }
-        .blue-text { color: #00ffff; font-weight: bold; }
-        .flash-box { background: #000; color: #ffeb3b; padding: 5px; border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 4px; letter-spacing: 3px; font-size: 1.1rem; border: 1px solid #444; }
+        .flash-box { background: #000; color: #ffeb3b; padding: 6px; border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 5px; letter-spacing: 4px; font-size: 1.2rem; border: 1px solid #444; }
     </style>
 </head>
 <body>
@@ -53,11 +53,11 @@
     <h1 style="text-align:center; font-size:1.1rem; color:#ffcc00; margin:10px 0;">🌺 沖ドキ!DUO 完全攻略Navi</h1>
 
     <div class="tabs">
-        <div id="btn-tool" class="tab active" onclick="showPage('tool')">判定ツール</div>
-        <div id="btn-db" class="tab" onclick="showPage('db')">解析DB</div>
+        <div id="btn-tool" class="tab active" onclick="changeTab('tool')">判定ツール</div>
+        <div id="btn-db" class="tab" onclick="changeTab('db')">解析DB</div>
     </div>
 
-    <div id="page-tool" class="page" style="display: block;">
+    <div id="page-tool" class="page active">
         <div class="card">
             <label>状況を選択</label>
             <select id="state">
@@ -75,13 +75,13 @@
             <label>現在の回転数 (G)</label>
             <input type="number" id="games" placeholder="例: 150">
             <div class="check-row">
-                <input type="checkbox" id="kari_loop"> <span class="blue-text">仮天ループ中</span>
+                <input type="checkbox" id="kari_loop"> <span style="color: #00ffff; font-weight: bold;">仮天ループ中</span>
             </div>
             <div class="check-row">
-                <input type="checkbox" id="dhc_fail"> <span style="color:#ffcc00;">DHC失敗後 (ドキハナ失敗)</span>
+                <input type="checkbox" id="dhc_fail"> <span style="color:#ffcc00; font-weight: bold;">DHC失敗後 (ドキハナ失敗)</span>
             </div>
             <div class="check-row">
-                <input type="checkbox" id="flash2"> <span style="color:#ef9a9a;">ベル特殊フラッシュ②発生</span>
+                <input type="checkbox" id="flash2"> <span style="color:#ef9a9a; font-weight: bold;">ベル特殊フラッシュ②発生</span>
             </div>
             <button class="btn-judge" onclick="runCheck()">期待値を判定する</button>
             <div id="result"></div>
@@ -93,6 +93,20 @@
                 <input type="number" id="win_games" placeholder="当選G">
                 <input type="text" id="memo" placeholder="メモ">
             </div>
-            <button onclick="saveData()" style="background: #2196f3; color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; font-weight: bold; margin-top: 10px;">履歴に保存</button>
+            <button onclick="saveData()" style="background: #2196f3; color: white; padding: 18px; border: none; border-radius: 8px; width: 100%; font-weight: bold; margin-top: 15px;">履歴に保存</button>
             <div style="overflow-x: auto; margin-top: 15px;">
-                <table style="width:
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead><tr style="background:#444;"><th>状況</th><th>ス</th><th>開始</th><th>当選</th><th>メモ</th></tr></thead>
+                    <tbody id="historyBody" style="text-align:center;"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-db" class="page">
+        <details open>
+            <summary>🌸 特殊フラッシュ示唆演出</summary>
+            <div class="details-inner">
+                <table class="info-table">
+                    <tr style="background:#111; color:#ffcc00;"><th>フラッシュ</th><th>示唆内容</th></tr>
+                    <tr><td><div class="flash-box">← ← ←</div>リプレイ特殊①</td><td>モード
